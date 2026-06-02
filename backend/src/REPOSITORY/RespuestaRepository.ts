@@ -71,7 +71,7 @@ export class RespuestaRepository implements IRespuestaRepository {
             let suma = 0;
             let j = 0;
             while (j < datos.length) {
-                suma = suma + Number(datos[j][campo]);
+                suma = suma + Number((datos[j] as any)[campo]);
                 j = j + 1;
             }
             promedios[campo] = Math.round((suma / datos.length) * 10) / 10;
