@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 // ── Tipos ──────────────────────────────────────────────
 interface OpcionEscala {
@@ -57,7 +58,7 @@ const ESCALA_TEXTURA: OpcionEscala[] = [
   { valor: 4, etiqueta: "Crocante" },
   { valor: 3, etiqueta: "Blanda" },
   { valor: 2, etiqueta: "Muy blanda" },
-  { valor: 1, etiqueta: "Pastosa" },
+  { valor: 1, etiqueta: "Demasiado blanda" },
 ];
 
 const ESCALA_GENERAL: OpcionEscala[] = [
@@ -156,6 +157,7 @@ function Seccion({ titulo }: { titulo: string }) {
 const PASOS_LABELS = ["DATOS", "VISTA", "OLFATO Y TEXTURA", "SABOR", "PRUEBA AFECTIVA"];
 
 export default function EncuestaPage() {
+  const router = useRouter();
   const [paso, setPaso] = useState(1);
   const [sexo, setSexo] = useState("");
   const [edad, setEdad] = useState("");
@@ -249,9 +251,25 @@ export default function EncuestaPage() {
         <div style={{ width: "100%", maxWidth: "950px", background: "white", borderRadius: "30px", padding: "70px 40px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)", textAlign: "center" }}>
           <div style={{ fontSize: "64px", marginBottom: "24px" }}>🥑</div>
           <h1 style={{ color: "#76955E", marginBottom: "14px" }}>¡Muchas gracias!</h1>
-          <p style={{ color: "#777", fontSize: "16px", maxWidth: "420px", margin: "0 auto" }}>
+          <p style={{ color: "#777", fontSize: "16px", maxWidth: "420px", margin: "0 auto 32px" }}>
             Tu opinión es muy importante para nosotros. Las respuestas fueron registradas correctamente.
           </p>
+          <button
+            onClick={() => router.push("/")}
+            style={{
+              background: "#76955E",
+              color: "white",
+              border: "none",
+              padding: "14px 36px",
+              borderRadius: "14px",
+              fontWeight: "700",
+              fontSize: "15px",
+              cursor: "pointer",
+              boxShadow: "0 4px 12px rgba(118,149,94,0.3)",
+            }}
+          >
+            ← Volver al inicio
+          </button>
         </div>
       </main>
     );
@@ -260,6 +278,35 @@ export default function EncuestaPage() {
   return (
     <main style={{ minHeight: "100vh", background: "#F8F6EF", display: "flex", justifyContent: "center", alignItems: "center", padding: "40px" }}>
       <div style={{ width: "100%", maxWidth: "950px", background: "white", borderRadius: "30px", padding: "40px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)" }}>
+
+        {/* BOTÓN MENÚ PRINCIPAL */}
+        <div style={{ display: "flex", justifyContent: "flex-start", marginBottom: "24px" }}>
+          <button
+            onClick={() => router.push("/")}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              background: "transparent",
+              border: "2px solid #C8D4B0",
+              color: "#76955E",
+              fontWeight: "700",
+              fontSize: "13px",
+              padding: "9px 20px",
+              borderRadius: "30px",
+              cursor: "pointer",
+              letterSpacing: "0.3px",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.background = "#F3F7EE";
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.background = "transparent";
+            }}
+          >
+            ← Menú principal
+          </button>
+        </div>
 
         {/* BARRA DE PROGRESO */}
         <div style={{ display: "flex", gap: "8px", marginBottom: "16px" }}>
