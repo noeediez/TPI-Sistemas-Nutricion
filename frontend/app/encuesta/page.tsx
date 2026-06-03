@@ -364,7 +364,21 @@ export default function EncuestaPage() {
             <Seccion titulo="PREGUNTAS GENERALES" />
             <PreguntaSiNo titulo="¿Consumirías estos nuggets de forma alternativa a productos cárnicos?" valor={consumiriaAlternativa} setValor={setConsumiriaAlternativa} />
             <PreguntaSiNo titulo="¿Consumirías este dip de palta como reemplazo a aderezos industriales?" valor={consumiriaDip} setValor={setConsumiriaDip} />
-            <Navegacion siguiente={2} />
+            <Navegacion
+              onSiguiente={() => {
+                if (
+                  sexo === "" ||
+                  edad === "" ||
+                  consumiriaAlternativa === "" ||
+                  consumiriaDip === ""
+                ) {
+                  alert("Debes completar todas las respuestas antes de continuar.");
+                  return;
+                }
+
+                setPaso(2);
+              }}
+/>
           </>
         )}
  
@@ -376,7 +390,21 @@ export default function EncuestaPage() {
             <PreguntaEscala titulo="¿El color de los nuggets le resulta atractivo?" valor={colorNuggets} setValor={setColorNuggets} opciones={ESCALA_ATRACTIVO} />
             <PreguntaEscala titulo="¿Cómo considera la apariencia general del producto?" valor={aparienciaGeneral} setValor={setAparienciaGeneral} opciones={ESCALA_CALIDAD} />
             <PreguntaEscala titulo="¿El dip de palta presenta un aspecto agradable?" valor={aspectoDip} setValor={setAspectoDip} opciones={ESCALA_CALIDAD} />
-            <Navegacion anterior={1} siguiente={3} />
+            <Navegacion
+            anterior={1}
+            onSiguiente={() => {
+              if (
+                colorNuggets === 0 ||
+                aparienciaGeneral === 0 ||
+                aspectoDip === 0
+              ) {
+                alert("Debes responder todas las preguntas.");
+                return;
+              }
+
+              setPaso(3);
+            }}
+          />
           </>
         )}
  
@@ -391,7 +419,22 @@ export default function EncuestaPage() {
             <PreguntaEscala titulo="¿Cómo considera la textura de los nuggets?" valor={texturaNuggets} setValor={setTexturaNuggets} opciones={ESCALA_TEXTURA} />
             <PreguntaEscala titulo="¿La consistencia interna le resulta adecuada?" valor={consistenciaInterna} setValor={setConsistenciaInterna} opciones={ESCALA_CALIDAD} />
             <PreguntaEscala titulo="¿Cómo percibe la cremosidad del dip?" valor={cremosidadDip} setValor={setCremosidadDip} opciones={ESCALA_CALIDAD} />
-            <Navegacion anterior={2} siguiente={4} />
+            <Navegacion
+            anterior={2}
+            onSiguiente={() => {
+              if (
+                aromaAgradable === 0 ||
+                texturaNuggets === 0 ||
+                consistenciaInterna === 0 ||
+                cremosidadDip === 0
+              ) {
+                alert("Debes responder todas las preguntas.");
+                return;
+              }
+
+              setPaso(4);
+            }}
+          />
           </>
         )}
  
@@ -403,78 +446,134 @@ export default function EncuestaPage() {
             <PreguntaEscala titulo="¿Le agradó el sabor de los nuggets?" valor={saborNuggets} setValor={setSaborNuggets} opciones={ESCALA_AGRADO} />
             <PreguntaEscala titulo="¿El sabor del dip combina bien con los nuggets?" valor={combinacionDip} setValor={setCombinacionDip} opciones={ESCALA_AGRADO} />
             <PreguntaEscala titulo="¿Considera adecuada la intensidad del sabor?" valor={intensidadSabor} setValor={setIntensidadSabor} opciones={ESCALA_CALIDAD} />
-            <Navegacion anterior={3} siguiente={5} />
-          </>
-        )}
- 
-        {/* ── PASO 5: PRUEBA AFECTIVA + COMENTARIOS ── */}
-        {paso === 5 && (
-          <>
-            <h1 style={{ color: "#76955E", marginBottom: "8px" }}>Prueba Afectiva</h1>
-            <p style={{ color: "#777", marginBottom: "10px" }}>Contanos tu impresión general del producto.</p>
-            <PreguntaEscala titulo="Calificá cuánto te gustó el producto en general." valor={gustoGeneral} setValor={setGustoGeneral} opciones={ESCALA_GENERAL} />
-            <PreguntaSiNo titulo="¿Consumirías este producto nuevamente?" valor={consumiriaNuevamente} setValor={setConsumiriaNuevamente} />
-            <PreguntaSiNo titulo="¿Recomendarías este producto a otra persona?" valor={recomendaria} setValor={setRecomendaria} />
- 
-            <Seccion titulo="COMENTARIOS Y SUGERENCIAS" />
-            <textarea
-              value={comentario}
-              onChange={(e) => setComentario(e.target.value)}
-              placeholder="Escribí aquí cualquier observación o sugerencia..."
-              rows={5}
-              style={{
-                width: "100%",
-                borderRadius: "14px",
-                border: "2px solid #D8D8D8",
-                padding: "16px",
-                fontSize: "14px",
-                color: "#444",
-                resize: "vertical",
-                outline: "none",
-                fontFamily: "inherit",
-                boxSizing: "border-box",
-                lineHeight: "1.6",
-              }}
-            />
- 
             <Navegacion
-              anterior={4}
-              onSiguiente={async () => {
-                setEnviando(true);
-                const { error } = await supabase.from("respuestas").insert({
-                  sexo,
-                  edad,
-                  consumiria_alternativa:  consumiriaAlternativa,
-                  consumiria_dip:          consumiriaDip,
-                  color_nuggets:           colorNuggets,
-                  apariencia_general:      aparienciaGeneral,
-                  aspecto_dip:             aspectoDip,
-                  aroma_agradable:         aromaAgradable,
-                  textura_nuggets:         texturaNuggets,
-                  consistencia_interna:    consistenciaInterna,
-                  cremosidad_dip:          cremosidadDip,
-                  sabor_nuggets:           saborNuggets,
-                  combinacion_dip:         combinacionDip,
-                  intensidad_sabor:        intensidadSabor,
-                  gusto_general:           gustoGeneral,
-                  consumiria_nuevamente:   consumiriaNuevamente,
-                  recomendaria,
-                  comentario,
-                });
-                setEnviando(false);
-                if (error) {
-                  alert("Error al guardar. Intentá de nuevo.");
-                  console.error(error);
-                  return;
-                }
-                setEnviado(true);
-              }}
-            />
-          </>
+            anterior={3}
+            onSiguiente={() => {
+              if (
+                saborNuggets === 0 ||
+                combinacionDip === 0 ||
+                intensidadSabor === 0
+              ) {
+                alert("Debes responder todas las preguntas.");
+                return;
+              }
+
+              setPaso(5);
+            }}
+          />
+                    </>
         )}
  
+       {/* ── PASO 5: PRUEBA AFECTIVA + COMENTARIOS ── */}
+{paso === 5 && (
+  <>
+    <h1 style={{ color: "#76955E", marginBottom: "8px" }}>
+      Prueba Afectiva
+    </h1>
+
+    <p style={{ color: "#777", marginBottom: "10px" }}>
+      Contanos tu impresión general del producto.
+    </p>
+
+    <PreguntaEscala
+      titulo="Calificá cuánto te gustó el producto en general."
+      valor={gustoGeneral}
+      setValor={setGustoGeneral}
+      opciones={ESCALA_GENERAL}
+    />
+
+    <PreguntaSiNo
+      titulo="¿Consumirías este producto nuevamente?"
+      valor={consumiriaNuevamente}
+      setValor={setConsumiriaNuevamente}
+    />
+
+    <PreguntaSiNo
+      titulo="¿Recomendarías este producto a otra persona?"
+      valor={recomendaria}
+      setValor={setRecomendaria}
+    />
+
+    <Seccion titulo="COMENTARIOS Y SUGERENCIAS" />
+
+    <textarea
+      value={comentario}
+      onChange={(e) => setComentario(e.target.value)}
+      placeholder="Escribí aquí cualquier observación o sugerencia..."
+      rows={5}
+      style={{
+        width: "100%",
+        borderRadius: "14px",
+        border: "2px solid #D8D8D8",
+        padding: "16px",
+        fontSize: "14px",
+        color: "#444",
+        resize: "vertical",
+        outline: "none",
+        fontFamily: "inherit",
+        boxSizing: "border-box",
+        lineHeight: "1.6",
+      }}
+    />
+
+    <Navegacion
+      anterior={4}
+      onSiguiente={async () => {
+        if (
+          gustoGeneral === 0 ||
+          consumiriaNuevamente === "" ||
+          recomendaria === ""
+        ) {
+          alert(
+            "Debes completar todas las respuestas antes de enviar."
+          );
+          return;
+        }
+
+        setEnviando(true);
+
+       const { error } = await supabase.from("respuestas").insert({
+        sexo,
+        rango_etario: edad,
+
+        alternativa_carnica: consumiriaAlternativa === "Sí" ? 1 : 0,
+        reemplazo_aderezo: consumiriaDip === "Sí" ? 1 : 0,
+
+        color_atractivo: colorNuggets,
+        apariencia_general: aparienciaGeneral,
+        dip_aspecto: aspectoDip,
+
+        aroma: aromaAgradable,
+
+        textura_nuggets: texturaNuggets,
+        consistencia_interna: consistenciaInterna,
+        cremosidad_dip: cremosidadDip,
+
+        sabor_nuggets: saborNuggets,
+        combinacion_sabores: combinacionDip,
+        intensidad_sabor: intensidadSabor,
+
+        satisfaccion_general: gustoGeneral,
+
+        consumiria_nuevamente: consumiriaNuevamente === "Sí" ? 1 : 0,
+        recomendaria: recomendaria === "Sí" ? 1 : 0,
+        comentarios: comentario,
+      });
+
+        setEnviando(false);
+
+        if (error) {
+        console.error("SUPABASE ERROR:", error);
+        alert(error.message);
+        return;
+      }
+
+        setEnviado(true);
+      }}
+    />
+  </>
+)}
       </div>
-    </main>
-  );
-}
- 
+    </main> 
+  )}
+

@@ -147,7 +147,7 @@ export default function Home() {
 
       {/* BOTÓN PANEL ADMINISTRACIÓN */}
       <div style={{ marginTop: "60px", display: "flex", justifyContent: "center" }}>
-        <Link href="/admin">
+        <Link href="/admin/login">
           <button
             style={{
               background: "transparent",
