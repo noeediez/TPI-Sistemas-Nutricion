@@ -692,5 +692,5 @@ export default function AdminPanel() {
         {page === "notas"        && <PageNotas />}
       </main>
     </div>
-  );
+  ); /////////////prueba a a a 
 }
