@@ -237,16 +237,15 @@ export default function AdminLoginPage() {
         </form>
 
         {/* Credenciales de prueba */}
-        <p
-          style={{
-            textAlign: "center",
+        <p style={{ 
+          textAlign: "center",
             marginTop: "20px",
             color: "#bbb",
             fontSize: "12px",
             lineHeight: "1.6",
           }}
         >
-          Credenciales de prueba:
+        Credenciales de prueba:
           <br />
           <code style={{ color: "#999" }}>admin / admin123</code>
         </p>
@@ -254,3 +253,6 @@ export default function AdminLoginPage() {
     </main>
   );
 }
+
+// para ver para ver
+ //para ver cver cer 
