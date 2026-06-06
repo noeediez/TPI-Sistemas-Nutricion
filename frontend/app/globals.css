@@ -17,7 +17,7 @@ html, body {
 }
 
 body {
-  background: linear-gradient(135deg, #2e7d32 0%, #43a047 40%, #ff9800 100%);
+  background: #F8F6EF;
   color: var(--dark);
 }
 
@@ -258,7 +258,7 @@ button:hover { transform: translateY(-2px); }
 
 .admin-hamburger {
   display: none;
-  background: white;
+  background: transparent;
   border: 1px solid #EEE;
   border-radius: 10px;
   padding: 8px 12px;
@@ -314,15 +314,10 @@ button:hover { transform: translateY(-2px); }
 }
 
 @media (max-width: 768px) {
-  .admin-resumen-grid {
-    grid-template-columns: 1fr !important;
-  }
-
   .grafico-intencion {
     overflow-x: auto;
   }
-
   .grafico-intencion > div {
-    min-width: 320px;
+    min-width: 520px;
   }
 }

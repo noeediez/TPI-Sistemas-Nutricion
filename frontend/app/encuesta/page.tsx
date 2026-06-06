@@ -163,6 +163,7 @@ export default function EncuestaPage() {
   const [enviando, setEnviando] = useState(false);
   const [sexo, setSexo] = useState("");
   const [edad, setEdad] = useState("");
+  const [aviso, setAviso] = useState("");
  
   const [consumiriaAlternativa, setConsumiriaAlternativa] = useState("");
   const [consumiriaDip, setConsumiriaDip] = useState("");
@@ -372,7 +373,7 @@ export default function EncuestaPage() {
                   consumiriaAlternativa === "" ||
                   consumiriaDip === ""
                 ) {
-                  alert("Debes completar todas las respuestas antes de continuar.");
+                  setAviso("Te faltan algunas respuestas. Completá todas las preguntas antes de continuar.");
                   return;
                 }
 
@@ -398,7 +399,7 @@ export default function EncuestaPage() {
                 aparienciaGeneral === 0 ||
                 aspectoDip === 0
               ) {
-                alert("Debes responder todas las preguntas.");
+                setAviso("Te faltan algunas preguntas en esta sección.");
                 return;
               }
 
@@ -428,7 +429,7 @@ export default function EncuestaPage() {
                 consistenciaInterna === 0 ||
                 cremosidadDip === 0
               ) {
-                alert("Debes responder todas las preguntas.");
+                setAviso("Te faltan algunas preguntas en esta sección.");
                 return;
               }
 
@@ -454,7 +455,7 @@ export default function EncuestaPage() {
                 combinacionDip === 0 ||
                 intensidadSabor === 0
               ) {
-                alert("Debes responder todas las preguntas.");
+                setAviso("Te faltan algunas preguntas en esta sección.");
                 return;
               }
 
@@ -524,9 +525,7 @@ export default function EncuestaPage() {
           consumiriaNuevamente === "" ||
           recomendaria === ""
         ) {
-          alert(
-            "Debes completar todas las respuestas antes de enviar."
-          );
+          setAviso("Te faltan algunas respuestas antes de enviar la encuesta.");
           return;
         }
 
@@ -574,6 +573,16 @@ export default function EncuestaPage() {
   </>
 )}
       </div>
+
+      {aviso && (
+        <>
+          <div className="aviso-overlay" onClick={() => setAviso("")} />
+          <div className="aviso-toast">
+            <div className="aviso-icono">🌿</div>
+            <div className="aviso-texto">{aviso}</div>
+            <button className="aviso-cerrar" onClick={() => setAviso("")}>Entendido</button>
+          </div>
+        </>
+      )}
     </main> 
   )}
-
