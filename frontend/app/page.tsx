@@ -32,7 +32,6 @@ export default function Home() {
         <div className="hero-texto">
           <span style={{
             background: "#EFE4C7",
-            padding: "10px 18px",
             borderRadius: "20px",
             color: "#2E5E2C",
             fontSize: "14px",
@@ -127,12 +126,15 @@ export default function Home() {
       <div style={{ marginTop: "40px", marginBottom: "40px", display: "flex", justifyContent: "center" }}>
         <Link href="/admin/login">
           <button style={{
-            background: "transparent",
-            border: "none",
-            color: "#AAAAAA",
+            background: "#EFE4C7",
+            color: "#2E5E2C",
             fontSize: "13px",
+            fontWeight: "700",
+            letterSpacing: "1px",
+            padding: "8px 16px",
+            borderRadius: "20px",
+            border: "none",
             cursor: "pointer",
-            textDecoration: "underline",
           }}>
             Panel de administración
           </button>

@@ -301,3 +301,28 @@ button:hover { transform: translateY(-2px); }
     z-index: 99;
   }
 }
+
+.btn-volver {
+  background: transparent;
+  border: 2px solid #C8D4B0;
+  color: #76955E;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 12px 24px;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .admin-resumen-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .grafico-intencion {
+    overflow-x: auto;
+  }
+
+  .grafico-intencion > div {
+    min-width: 320px;
+  }
+}
