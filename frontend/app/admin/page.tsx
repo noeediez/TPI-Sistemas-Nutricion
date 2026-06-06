@@ -261,7 +261,7 @@ const pctRec =
         <MetricCard icon="" value={`${calMedia.toFixed(1)}/5`} label="Calificación media"  color="#E07070" />
       </div>
 
-      <div style={S.twoCol}>
+      <div className="two-col" style={S.twoCol}>
         <div style={S.card}>
           <div style={S.cardTitle}>📊 Distribución por Edad</div>
           {edadGroups.map((g) => (
@@ -601,6 +601,7 @@ export default function AdminPanel() {
   const [loading, setLoading]       = useState(true);
   const [error, setError]           = useState<string | null>(null);
   const [page, setPage]             = useState<PageId>("resumen");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -646,9 +647,23 @@ export default function AdminPanel() {
   ];
 
   return (
-    <div style={S.app}>
+    <div className="admin-app" style={S.app}>
+      {/* Overlay mobile */}
+      {sidebarOpen && (
+        <div
+          onClick={() => setSidebarOpen(false)}
+          style={{
+            position: "fixed", inset: 0,
+            background: "rgba(0,0,0,0.35)", zIndex: 90,
+          }}
+        />
+      )}
+
       {/* Sidebar */}
-      <div style={S.sidebar}>
+      <div
+        className={sidebarOpen ? "admin-sidebar admin-sidebar--open" : "admin-sidebar"}
+        style={S.sidebar}
+      >
         <div style={S.brand}>
           <div style={S.brandName}>🥑 Dip & Crunch</div>
           <div style={S.brandSub}>Panel de Control</div>
@@ -658,7 +673,7 @@ export default function AdminPanel() {
           <div
             key={n.id}
             style={S.navItem(page === n.id)}
-            onClick={() => setPage(n.id)}
+            onClick={() => { setPage(n.id); setSidebarOpen(false); }}
           >
             <span>{n.emoji}</span>
             <span>{n.label}</span>
@@ -681,6 +696,25 @@ export default function AdminPanel() {
 
       {/* Main */}
       <main style={S.main}>
+        {/* Hamburger bar — solo visible en mobile via CSS */}
+        <div className="admin-mobile-bar">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            style={{
+              background: "none", border: "none", cursor: "pointer",
+              display: "flex", flexDirection: "column", gap: "5px", padding: "4px",
+            }}
+          >
+            <span style={{ display: "block", width: "22px", height: "2px", background: "#555" }} />
+            <span style={{ display: "block", width: "22px", height: "2px", background: "#555" }} />
+            <span style={{ display: "block", width: "22px", height: "2px", background: "#555" }} />
+          </button>
+          <span style={{ fontWeight: "700", fontSize: "14px", color: "#333" }}>
+            {navItems.find(n => n.id === page)?.label ?? "Panel"}
+          </span>
+          <span style={S.adminBadge}>Admin</span>
+        </div>
+
         <div style={S.topBar}>
           <span style={S.adminBadge}>Administradora</span>
         </div>

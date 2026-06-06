@@ -109,7 +109,7 @@ export default function Home() {
 
         <div style={{ flex: 1.4, display: "flex", justifyContent: "flex-end" }}>
           <Image
-            src="/PRODUCTO.png"
+            src="/producto.png"
             alt="Producto"
             width={990}
             height={990}
