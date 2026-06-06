@@ -142,7 +142,17 @@ button:hover { transform: translateY(-2px); }
   }
 
   .hero-botones {
+    flex-direction: column;
     justify-content: center;
+    width: 100%;
+  }
+
+  .hero-botones a {
+    width: 100%;
+  }
+
+  .hero-botones button {
+    width: 100%;
   }
 
   .hero-imagen img {

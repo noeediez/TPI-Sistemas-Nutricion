@@ -17,10 +17,10 @@ const dip = [
 export default function IngredientesPage() {
   return (
     <main
+      className="ingredientes-main"
       style={{
         minHeight: "100vh",
         background: "#F8F6EF",
-        padding: "40px",
         display: "flex",
         flexDirection: "column",
       }}
@@ -41,9 +41,9 @@ export default function IngredientesPage() {
           🌿 100% VEGETAL
         </span>
         <h1
+          className="ingredientes-titulo"
           style={{
             color: "#2E5E2C",
-            fontSize: "52px",
             fontWeight: "800",
             marginTop: "16px",
             marginBottom: "8px",
@@ -52,7 +52,7 @@ export default function IngredientesPage() {
         >
           Ingredientes
         </h1>
-        <p style={{ color: "#76955E", fontSize: "16px", margin: 0 }}>
+        <p className="ingredientes-subtitulo" style={{ color: "#76955E", fontSize: "16px", margin: 0 }}>
           Todos naturales, sin conservantes artificiales.
         </p>
       </div>
