@@ -7,8 +7,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "outDir": "./dist",
-    "rootDir": "./backend/src"
+    "rootDir": "."
   },
-  "include": ["backend/src/**/*.ts", "backend/test/**/*.ts"],
-  "exclude": ["node_modules", "dist", "frontend"]
+  "include": ["src/**/*.ts", "test/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }
