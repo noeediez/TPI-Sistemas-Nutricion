@@ -329,8 +329,8 @@ button:hover { transform: translateY(-2px); }
     overflow-x: auto;
   }
 
-  .grafico-intencion > div {
-    min-width: 520px !important;
+  .grafico-intencion-inner {
+    min-width: 520px;
   }
 }
 

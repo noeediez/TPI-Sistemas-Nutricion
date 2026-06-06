@@ -352,17 +352,19 @@ function PageDescriptivos({ respuestas }: { respuestas: Respuesta[] }) {
           <p style={{ textAlign: "center", color: "#ccc", padding: "48px 0" }}>Sin datos aún</p>
         ) : (
           <div className="grafico-intencion">
-            <ResponsiveContainer width="100%" height={220}>
-              <BarChart data={intentData} layout="vertical" margin={{ top: 5, right: 20, left: 120, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F0" horizontal={false} />
-                <XAxis type="number" allowDecimals={false} tick={{ fontSize: 11, fill: "#bbb" }} />
-                <YAxis type="category" dataKey="label" tick={{ fontSize: 11, fill: "#888" }} width={115} />
-                <Tooltip formatter={(v) => [v, "Respuestas"]} cursor={{ fill: "#F8F6EF" }} />
-                <Bar dataKey="cantidad" radius={[0, 8, 8, 0]}>
-                  {intentData.map((e, i) => <Cell key={i} fill={e.color} />)}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="grafico-intencion-inner">
+              <ResponsiveContainer width="100%" height={220}>
+                <BarChart data={intentData} layout="vertical" margin={{ top: 5, right: 20, left: 120, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F0" horizontal={false} />
+                  <XAxis type="number" allowDecimals={false} tick={{ fontSize: 11, fill: "#bbb" }} />
+                  <YAxis type="category" dataKey="label" tick={{ fontSize: 11, fill: "#888" }} width={115} />
+                  <Tooltip formatter={(v) => [v, "Respuestas"]} cursor={{ fill: "#F8F6EF" }} />
+                  <Bar dataKey="cantidad" radius={[0, 8, 8, 0]}>
+                    {intentData.map((e, i) => <Cell key={i} fill={e.color} />)}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         )}
       </div>
