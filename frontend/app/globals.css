@@ -88,6 +88,7 @@ button:hover { transform: translateY(-2px); }
   align-items: center;
   gap: 40px;
   flex-wrap: wrap;
+  padding: 40px 40px 20px 40px; 
 }
 
 .hero-texto {
@@ -253,7 +254,6 @@ button:hover { transform: translateY(-2px); }
   flex: 1;
   padding: 32px 32px 60px;
   min-width: 0;
-  overflow-x: hidden;
 }
 
 .admin-hamburger {

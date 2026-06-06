@@ -674,11 +674,8 @@ export default function AdminPanel() {
         <div style={{ marginTop: "auto", padding: "16px 18px 0", borderTop: "1px solid #EEE" }}>
           <button
             onClick={() => router.push("/")}
-            style={{
-              display: "flex", alignItems: "center", gap: "6px",
-              background: "transparent", border: "none",
-              fontSize: "12px", color: "#bbb", cursor: "pointer", padding: "8px 0",
-            }}
+            className="btn-volver"
+            style={{ display: "flex", alignItems: "center", gap: "6px" }}
           >
             ← Menú principal
           </button>
