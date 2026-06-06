@@ -88,7 +88,7 @@ button:hover { transform: translateY(-2px); }
   align-items: center;
   gap: 40px;
   flex-wrap: wrap;
-  padding: 40px 40px 20px 40px; 
+  padding: 0 40px; 
 }
 
 .hero-texto {
