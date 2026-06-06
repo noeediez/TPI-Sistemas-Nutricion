@@ -11,25 +11,17 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   min-height: 100vh;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  background: linear-gradient(
-    135deg,
-    #2e7d32 0%,
-    #43a047 40%,
-    #ff9800 100%
-  );
+  background: linear-gradient(135deg, #2e7d32 0%, #43a047 40%, #ff9800 100%);
   color: var(--dark);
 }
 
-a {
-  text-decoration: none;
-}
+a { text-decoration: none; }
 
 button {
   cursor: pointer;
@@ -37,9 +29,7 @@ button {
   transition: all 0.3s ease;
 }
 
-button:hover {
-  transform: translateY(-2px);
-}
+button:hover { transform: translateY(-2px); }
 
 .main-container {
   min-height: 100vh;
@@ -59,9 +49,7 @@ button:hover {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-.logo {
-  margin-bottom: 20px;
-}
+.logo { margin-bottom: 20px; }
 
 .title {
   font-size: 3rem;
@@ -91,4 +79,90 @@ button:hover {
   border-radius: 12px;
   font-size: 1rem;
   margin: 8px;
+}
+
+/* ── RESPONSIVE ── */
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.hero-texto {
+  flex: 1;
+  min-width: 280px;
+}
+
+.hero-imagen {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-width: 280px;
+}
+
+.hero-titulo {
+  font-size: 72px;
+  color: #2E5E2C;
+  line-height: 0.95;
+  font-weight: 800;
+}
+
+.hero-botones {
+  margin-top: 40px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 40px;
+}
+
+.card-feature {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    padding: 30px 20px;
+    text-align: center;
+  }
+
+  .hero-titulo {
+    font-size: 42px;
+  }
+
+  .hero-botones {
+    justify-content: center;
+  }
+
+  .hero-imagen img {
+    max-width: 280px !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .cards-grid {
+    padding: 20px;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-titulo {
+    font-size: 34px;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
 }
