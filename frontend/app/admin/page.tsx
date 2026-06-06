@@ -601,6 +601,7 @@ export default function AdminPanel() {
   const [loading, setLoading]       = useState(true);
   const [error, setError]           = useState<string | null>(null);
   const [page, setPage]             = useState<PageId>("resumen");
+  const [sidebarAbierto, setSidebarAbierto] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -646,9 +647,12 @@ export default function AdminPanel() {
   ];
 
   return (
-    <div style={S.app}>
+    <div className="admin-layout">
+      {sidebarAbierto && (
+        <div className="admin-overlay" onClick={() => setSidebarAbierto(false)} />
+      )}
       {/* Sidebar */}
-      <div style={S.sidebar}>
+      <div className={`admin-sidebar ${sidebarAbierto ? "abierto" : ""}`}>
         <div style={S.brand}>
           <div style={S.brandName}>🥑 Dip & Crunch</div>
           <div style={S.brandSub}>Panel de Control</div>
@@ -680,7 +684,10 @@ export default function AdminPanel() {
       </div>
 
       {/* Main */}
-      <main style={S.main}>
+      <main className="admin-main-content">
+        <button className="admin-hamburger" onClick={() => setSidebarAbierto(true)}>
+          ☰ Menú
+        </button>
         <div style={S.topBar}>
           <span style={S.adminBadge}>Administradora</span>
         </div>

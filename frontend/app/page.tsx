@@ -54,10 +54,30 @@ export default function Home() {
 
           <div className="hero-botones">
             <Link href="/encuesta">
-              <button className="btn-primario">Comenzar Encuesta</button>
+              <button style={{
+                background: "#76955E",
+                color: "white",
+                border: "none",
+                padding: "18px 30px",
+                borderRadius: "15px",
+                cursor: "pointer",
+                fontSize: "18px",
+              }}>
+                Comenzar Encuesta
+              </button>
             </Link>
             <Link href="/ingredientes">
-              <button className="btn-secundario">Ver Ingredientes</button>
+              <button style={{
+                background: "transparent",
+                border: "2px solid #76955E",
+                color: "#76955E",
+                padding: "18px 30px",
+                borderRadius: "15px",
+                cursor: "pointer",
+                fontSize: "18px",
+              }}>
+                Ver Ingredientes
+              </button>
             </Link>
           </div>
         </div>

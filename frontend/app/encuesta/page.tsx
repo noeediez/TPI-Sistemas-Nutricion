@@ -242,9 +242,8 @@ export default function EncuestaPage() {
  
   if (enviado) {
     return (
-      <main style={{ minHeight: "100vh", background: "#F8F6EF", display: "flex", justifyContent: "center", alignItems: "center", padding: "40px" }}>
-        <div style={{ width: "100%", maxWidth: "950px", background: "white", borderRadius: "30px", padding: "70px 40px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)", textAlign: "center" }}>
-          <div style={{ fontSize: "64px", marginBottom: "24px" }}>🥑</div>
+      <main className="encuesta-main" style={{ minHeight: "100vh", background: "#F8F6EF", display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <div className="encuesta-card" style={{ width: "100%", maxWidth: "950px", background: "white", borderRadius: "30px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)", textAlign: "center" }}          <div style={{ fontSize: "64px", marginBottom: "24px" }}>🥑</div>
           <h1 style={{ color: "#76955E", marginBottom: "14px" }}>¡Muchas gracias!</h1>
           <p style={{ color: "#777", fontSize: "16px", maxWidth: "420px", margin: "0 auto 32px" }}>
             Tu opinión es muy importante para nosotros. Las respuestas fueron registradas correctamente.
@@ -271,8 +270,8 @@ export default function EncuestaPage() {
   }
  
   return (
-    <main style={{ minHeight: "100vh", background: "#F8F6EF", display: "flex", justifyContent: "center", alignItems: "center", padding: "40px" }}>
-      <div style={{ width: "100%", maxWidth: "950px", background: "white", borderRadius: "30px", padding: "40px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)" }}>
+    <main className="encuesta-main" style={{ minHeight: "100vh", background: "#F8F6EF", display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <div className="encuesta-card" style={{ width: "100%", maxWidth: "950px", background: "white", borderRadius: "30px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)" }}>
  
         <div style={{ display: "flex", justifyContent: "flex-start", marginBottom: "24px" }}>
           <button
