@@ -330,7 +330,7 @@ button:hover { transform: translateY(-2px); }
   }
 
   .grafico-intencion > div {
-    min-width: 520px;
+    min-width: 520px !important;
   }
 }
 
