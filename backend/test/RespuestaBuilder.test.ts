@@ -262,3 +262,67 @@ describe("RespuestaBuilder – build", () => {
         ).toThrow("Falta completar: General");
     });
 });
+describe("Respuesta – calcularPromedioGeneral", () => {
+    it("calcula el promedio de los 15 atributos correctamente", () => {
+        const resp = new RespuestaBuilder("uuid")
+            .setDatosPersonales("A", "B", "a@b.com")
+            .setDatosEvaluador("Otro", "18-25")
+            .setVista(4, 4, 4)
+            .setOlfatoTextura(4, 4, 4, 4)
+            .setSabor(4, 4, 4)
+            .setAfectivos(4, 4, 4, 4, 4)
+            .build();
+        expect(resp.calcularPromedioGeneral()).toBe(4);
+    });
+
+    it("redondea a un decimal", () => {
+        const resp = new RespuestaBuilder("uuid")
+            .setDatosPersonales("A", "B", "a@b.com")
+            .setDatosEvaluador("Otro", "18-25")
+            .setVista(5, 5, 5)
+            .setOlfatoTextura(5, 5, 5, 5)
+            .setSabor(5, 5, 5)
+            .setAfectivos(1, 1, 1, 1, 1)
+            .build();
+        expect(resp.calcularPromedioGeneral()).toBe(3.7);
+    });
+});
+
+describe("Respuesta – toJSON", () => {
+    it("retorna un objeto con todas las claves esperadas", () => {
+        const resp = new RespuestaBuilder("uuid-json")
+            .setDatosPersonales("Juan", "Perez", "juan@test.com")
+            .setDatosEvaluador("Masculino", "26-35")
+            .setVista(3, 4, 5)
+            .setOlfatoTextura(3, 4, 5, 2)
+            .setSabor(3, 4, 5)
+            .setAfectivos(3, 4, 5, 2, 3)
+            .setComentarios("ok")
+            .build();
+        const json = resp.toJSON() as any;
+        expect(json.client_uuid).toBe("uuid-json");
+        expect(json.sexo).toBe("Masculino");
+        expect(json.rango_etario).toBe("26-35");
+        expect(json.color_atractivo).toBe(3);
+        expect(json.comentarios).toBe("ok");
+    });
+});
+
+describe("Respuesta – getSexo y getRangoEtario", () => {
+    it("retorna el sexo asignado", () => {
+        const resp = builderCompleto().build();
+        expect(resp.getSexo()).toBe("Masculino");
+    });
+    it("retorna el rango etario asignado", () => {
+        const resp = builderCompleto().build();
+        expect(resp.getRangoEtario()).toBe("18-25");
+    });
+});
+
+describe("RespuestaBuilder – setDatosEvaluador – fluent API", () => {
+    it("retorna la misma instancia", () => {
+        const builder = new RespuestaBuilder("uuid").setDatosPersonales("A", "B", "a@b.com");
+        const retorno = builder.setDatosEvaluador("Otro", "18-25");
+        expect(retorno).toBe(builder);
+    });
+});
