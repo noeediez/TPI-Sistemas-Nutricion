@@ -572,16 +572,16 @@ export default function EncuestaPage() {
                     console.error("SUPABASE ERROR:", error);
                     // Fallback: guardar en cola (import dinámico)
                     try {
-                      const { saveToQueue } = await import("@/lib/voteQueue");
-                      await saveToQueue(payload);
+                      const { encolarVoto  } = await import("@/lib/voteQueue");
+                      await encolarVoto(payload);
                     } catch { /* ignorar si no disponible */ }
                     alert("Hubo un problema al enviar. Tu respuesta fue guardada y se enviará cuando haya conexión.");
                   }
                 } else {
                   // Sin internet: guardar en IndexedDB (import dinámico)
                   try {
-                    const { saveToQueue } = await import("@/lib/voteQueue");
-                    await saveToQueue(payload);
+                    const { encolarVoto } = await import("@/lib/voteQueue");
+                    await encolarVoto(payload);
                     console.log("[encuesta] Sin internet. Voto guardado en cola offline.");
                   } catch { /* ignorar si no disponible */ }
                 }

@@ -1,7 +1,6 @@
 import {Respuesta} from "../Respuesta";
 
 export interface IRespuestaBuilder {
-    setDatosPersonales(nombre: string, apellido: string, email: string): IRespuestaBuilder;
     setDatosEvaluador(sexo: string, rangoEtario: string): IRespuestaBuilder;
     setVista(color: number, apariencia: number, dipAspecto: number): IRespuestaBuilder;
     setOlfatoTextura(aroma: number, textura: number, consistencia: number, cremosidad: number): IRespuestaBuilder;
