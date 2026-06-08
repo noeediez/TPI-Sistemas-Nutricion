@@ -1,9 +1,6 @@
 export class Respuesta { // respuestas de la encuenta
 
     private clientUuid: string;
-    private nombre: string;
-    private apellido: string;
-    private email: string;
     private sexo: string;
     private rangoEtario: string;
     private colorAtractivo: number;
@@ -25,9 +22,6 @@ export class Respuesta { // respuestas de la encuenta
 
     constructor(
         clientUuid: string,
-        nombre: string,
-        apellido: string,
-        email: string,
         sexo: string,
         rangoEtario: string,
         colorAtractivo: number,
@@ -48,9 +42,6 @@ export class Respuesta { // respuestas de la encuenta
         comentarios: string
     ) {
         this.clientUuid = clientUuid;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.email = email;
         this.sexo = sexo;
         this.rangoEtario = rangoEtario;
         this.colorAtractivo = colorAtractivo;
@@ -72,9 +63,6 @@ export class Respuesta { // respuestas de la encuenta
     }
 
     public getClientUuid(): string { return this.clientUuid; }
-    public getNombre(): string { return this.nombre; }
-    public getApellido(): string { return this.apellido; }
-    public getEmail(): string { return this.email; }
     public getSexo(): string { return this.sexo; }
     public getRangoEtario(): string { return this.rangoEtario; }
     public getColorAtractivo(): number { return this.colorAtractivo; }
@@ -114,9 +102,6 @@ export class Respuesta { // respuestas de la encuenta
     public toJSON(): object {
         return {
             client_uuid: this.clientUuid,
-            nombre: this.nombre,
-            apellido: this.apellido,
-            email: this.email,
             sexo: this.sexo,
             rango_etario: this.rangoEtario,
             color_atractivo: this.colorAtractivo,

@@ -7,7 +7,7 @@ export class RespuestaRepository implements IRespuestaRepository {
     public async guardar(respuesta: Respuesta): Promise<void> {
         const resultado = await supabase
             .from("respuestas")
-            .upsert(respuesta.toJSON(), { onConflict: "email" });
+            .upsert(respuesta.toJSON(), { onConflict: "client_uuid" })
 
         if (resultado.error) {
             throw new Error("Error al guardar respuesta: " + resultado.error.message);
@@ -84,7 +84,7 @@ export class RespuestaRepository implements IRespuestaRepository {
     public async listarComentarios(): Promise<ComentarioConDatos[]> {
         const resultado = await supabase
             .from("respuestas")
-            .select("comentarios, nombre, apellido, sexo, rango_etario, created_at")
+            .select("comentarios, sexo, rango_etario, created_at")
             .not("comentarios", "is", null)
             .neq("comentarios", "")
             .order("created_at", { ascending: false });

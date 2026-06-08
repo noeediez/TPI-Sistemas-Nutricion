@@ -1,53 +1,47 @@
-// Cola offline usando IndexedDB.
-// Guarda votos cuando no hay internet y los envía cuando vuelve la conexión.
-
-const DB_NAME = "encuesta_db";
-const STORE_NAME = "vote_queue";
+const DB_NAME    = "dipcrunch_queue";
 const DB_VERSION = 1;
+const STORE_NAME = "votos_pendientes";
 
-function openDB(): Promise<IDBDatabase> {
+function abrirDB(): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VERSION);
-
-    req.onupgradeneeded = () => {
-      // Crea el store la primera vez. client_uuid es la clave.
-      req.result.createObjectStore(STORE_NAME, { keyPath: "client_uuid" });
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+    request.onupgradeneeded = (event) => {
+      const db = (event.target as IDBOpenDBRequest).result;
+      if (!db.objectStoreNames.contains(STORE_NAME)) {
+        db.createObjectStore(STORE_NAME, { keyPath: "client_uuid" });
+      }
     };
-
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
+    request.onsuccess = (event) => resolve((event.target as IDBOpenDBRequest).result);
+    request.onerror  = (event) => reject((event.target as IDBOpenDBRequest).error);
   });
 }
 
-/** Guarda (o sobreescribe) un voto en la cola local. */
-export async function saveToQueue(vote: Record<string, unknown>): Promise<void> {
-  const db = await openDB();
+export async function encolarVoto(voto: Record<string, unknown>): Promise<void> {
+  const db = await abrirDB();
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, "readwrite");
-    tx.objectStore(STORE_NAME).put(vote);
+    tx.objectStore(STORE_NAME).put(voto);
     tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
+    tx.onerror    = () => reject(tx.error);
   });
 }
 
-/** Devuelve todos los votos pendientes de enviar. */
-export async function getPendingVotes(): Promise<Record<string, unknown>[]> {
-  const db = await openDB();
+export async function obtenerVotosPendientes(): Promise<Record<string, unknown>[]> {
+  const db = await abrirDB();
   return new Promise((resolve, reject) => {
-    const tx = db.transaction(STORE_NAME, "readonly");
-    const req = tx.objectStore(STORE_NAME).getAll();
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
+    const tx      = db.transaction(STORE_NAME, "readonly");
+    const request = tx.objectStore(STORE_NAME).getAll();
+    request.onsuccess = () => resolve(request.result);
+    request.onerror   = () => reject(request.error);
   });
 }
 
-/** Elimina un voto de la cola (después de enviarlo con éxito). */
-export async function removeFromQueue(clientUuid: string): Promise<void> {
-  const db = await openDB();
+export async function eliminarVotoDeCola(clientUuid: string): Promise<void> {
+  const db = await abrirDB();
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, "readwrite");
     tx.objectStore(STORE_NAME).delete(clientUuid);
     tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
+    tx.onerror    = () => reject(tx.error);
   });
 }
