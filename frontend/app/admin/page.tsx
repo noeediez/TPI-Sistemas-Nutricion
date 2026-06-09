@@ -255,25 +255,6 @@ function PageResumen({ respuestas }: { respuestas: Respuesta[] }) {
         </div>
       </div>
 
-      {/* Intención de consumo — cuadro separado */}
-      <div style={{ ...S.card, marginBottom: "18px" }}>
-        <div style={S.cardTitle}>🔄 Intención de Consumo</div>
-        <div style={{ marginBottom: "20px" }}>
-          <div style={{ fontSize: "12px", color: "#555", fontWeight: "600", marginBottom: "10px" }}>
-            ¿Consumirías este producto nuevamente?
-          </div>
-          <HorizBar label="Sí" count={siConsumiria}   total={total} color="#76955E" />
-          <HorizBar label="No" count={noConsumiria}   total={total} color="#E07070" />
-        </div>
-        <div>
-          <div style={{ fontSize: "12px", color: "#555", fontWeight: "600", marginBottom: "10px" }}>
-            ¿Recomendarías este producto a otra persona?
-          </div>
-          <HorizBar label="Sí" count={siRecomendaria}  total={total} color="#76955E" />
-          <HorizBar label="No" count={noRecomendaria}  total={total} color="#E07070" />
-        </div>
-      </div>
-
       {/* Alternativa cárnica + Reemplazo aderezo — cuadro separado */}
       <div style={S.card}>
         <div style={S.cardTitle}>🌱 Preferencias de Consumo</div>
