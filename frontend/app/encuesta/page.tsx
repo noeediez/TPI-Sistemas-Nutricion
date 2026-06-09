@@ -274,13 +274,8 @@ export default function EncuestaPage() {
 
   if (enviado) {
     return (
-<<<<<<< HEAD
-      <main className="survey-main" style={{ minHeight: "100vh", background: "#F8F6EF", display: "flex", justifyContent: "center", alignItems: "flex-start", padding: "40px" }}>
-        <div className="survey-card" style={{ width: "100%", maxWidth: "950px", background: "white", borderRadius: "30px", padding: "70px 40px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)", textAlign: "center" }}>
-=======
       <main className="encuesta-main" style={{ minHeight: "100vh", background: "#F8F6EF", display: "flex", justifyContent: "center", alignItems: "center" }}>
         <div className="encuesta-card" style={{ width: "100%", maxWidth: "950px", background: "white", borderRadius: "30px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)", textAlign: "center" }}>
->>>>>>> origin/main
           <div style={{ fontSize: "64px", marginBottom: "24px" }}>🥑</div>
           <h1 style={{ color: "#76955E", marginBottom: "14px" }}>¡Muchas gracias!</h1>
           <p style={{ color: "#777", fontSize: "16px", maxWidth: "420px", margin: "0 auto 32px" }}>
@@ -308,15 +303,9 @@ export default function EncuestaPage() {
   }
 
   return (
-<<<<<<< HEAD
-    <main className="survey-main" style={{ minHeight: "100vh", background: "#F8F6EF", display: "flex", justifyContent: "center", alignItems: "flex-start", padding: "40px" }}>
-      <div className="survey-card" style={{ width: "100%", maxWidth: "950px", background: "white", borderRadius: "30px", padding: "40px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)" }}>
- 
-=======
     <main className="encuesta-main" style={{ minHeight: "100vh", background: "#F8F6EF", display: "flex", justifyContent: "center", alignItems: "center" }}>
       <div className="encuesta-card" style={{ width: "100%", maxWidth: "950px", background: "white", borderRadius: "30px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)" }}>
 
->>>>>>> origin/main
         <div style={{ display: "flex", justifyContent: "flex-start", marginBottom: "24px" }}>
           <button
             onClick={() => router.push("/")}
@@ -346,13 +335,8 @@ export default function EncuestaPage() {
             <div key={item} style={{ flex: 1, height: "8px", borderRadius: "20px", background: item <= paso ? "#E7B511" : "#E0E0E0", transition: "background 0.3s ease" }} />
           ))}
         </div>
-<<<<<<< HEAD
- 
-        <div className="step-labels" style={{ display: "flex", gap: "18px", marginBottom: "36px", fontWeight: "600", fontSize: "12px", flexWrap: "wrap" }}>
-=======
 
         <div style={{ display: "flex", gap: "18px", marginBottom: "36px", fontWeight: "600", fontSize: "12px", flexWrap: "wrap" }}>
->>>>>>> origin/main
           {PASOS_LABELS.map((label, i) => (
             <span key={i} style={{
               color: paso === i + 1 ? "#2E5E2C" : "#BBBBBB",
