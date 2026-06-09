@@ -26,6 +26,7 @@ interface NavegacionProps {
   anterior?: number;
   siguiente?: number;
   onSiguiente?: () => void;
+  esUltimo?: boolean;
 }
 
 // Escalas reutilizables 
@@ -222,7 +223,7 @@ export default function EncuestaPage() {
 
   const totalPasos = 5;
 
-  const Navegacion = ({ anterior, siguiente, onSiguiente }: NavegacionProps) => (
+  const Navegacion = ({ anterior, siguiente, onSiguiente, esUltimo }: NavegacionProps) => (
     <div
       style={{
         display: "flex",
@@ -267,8 +268,7 @@ export default function EncuestaPage() {
           boxShadow: "0 4px 12px rgba(231,181,17,0.35)",
         }}
       >
-        {enviando ? "Enviando..." : siguiente !== undefined ? "Siguiente →" : "Enviar encuesta ✓"}
-      </button>
+      {enviando ? "Enviando..." : esUltimo ? "Enviar encuesta ✓" : "Siguiente →"}      </button>
     </div>
   );
 
@@ -523,6 +523,7 @@ export default function EncuestaPage() {
 
             <Navegacion
               anterior={4}
+              esUltimo={true}
               onSiguiente={async () => {
                 if (gustoGeneral === 0 || consumiriaNuevamente === "" || recomendaria === "") {
                   setAviso("Te faltan algunas respuestas antes de enviar la encuesta.");
