@@ -1,6 +1,6 @@
-﻿import { describe, it, expect } from "vitest";
+import { describe, it, expect } from "vitest";
 import { PreguntaFactory } from "../src/FACTORY/PreguntaFactory";
-import { Pregunta } from "../src/Pregunta";
+import { Pregunta } from "../src/Pregunta";     
 
 describe("PreguntaFactory - crearPreguntasVista", () => {
     it("retorna exactamente 3 preguntas", () => {
@@ -38,13 +38,20 @@ describe("PreguntaFactory - crearPreguntasGenerales", () => {
     });
     it("los ids son los esperados", () => {
         const ids = PreguntaFactory.crearPreguntasGenerales().map(p => p.getId());
-        expect(ids).toEqual(["satisfaccion_general","consumiria_nuevamente","recomendaria","alternativa_carnica","reemplazo_aderezo"]);
+        expect(ids).toEqual([
+            "satisfaccion_general", "consumiria_nuevamente", "recomendaria",
+            "alternativa_carnica", "reemplazo_aderezo"
+        ]);
     });
 });
 
 describe("PreguntaFactory - banco completo", () => {
     it("la suma total es 15", () => {
-        const total = PreguntaFactory.crearPreguntasVista().length + PreguntaFactory.crearPreguntasOlfatoTextura().length + PreguntaFactory.crearPreguntasSabor().length + PreguntaFactory.crearPreguntasGenerales().length;
+        const total =
+            PreguntaFactory.crearPreguntasVista().length +
+            PreguntaFactory.crearPreguntasOlfatoTextura().length +
+            PreguntaFactory.crearPreguntasSabor().length +
+            PreguntaFactory.crearPreguntasGenerales().length;
         expect(total).toBe(15);
     });
     it("no hay ids duplicados", () => {
