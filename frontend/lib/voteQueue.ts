@@ -16,12 +16,11 @@ function abrirDB(): Promise<IDBDatabase> {
   });
 }
 
-/** Guarda (o sobreescribe) un voto en la cola local. */
 export async function saveToQueue(vote: Record<string, unknown>): Promise<void> {
-  const db = await openDB();
+  const db = await abrirDB();  // ← era openDB()
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, "readwrite");
-    tx.objectStore(STORE_NAME).put(voto);
+    tx.objectStore(STORE_NAME).put(vote);  // ← era voto
     tx.oncomplete = () => resolve();
     tx.onerror    = () => reject(tx.error);
   });

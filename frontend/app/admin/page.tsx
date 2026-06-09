@@ -201,10 +201,6 @@ function PageResumen({ respuestas }: { respuestas: Respuesta[] }) {
   const total = respuestas.length;
 
   // conteo directo sin Math.round
-  const siConsumiria   = respuestas.filter(r => r.consumiria_nuevamente === 1).length;
-  const noConsumiria   = respuestas.filter(r => r.consumiria_nuevamente === 0).length;
-  const siRecomendaria = respuestas.filter(r => r.recomendaria === 1).length;
-  const noRecomendaria = respuestas.filter(r => r.recomendaria === 0).length;
   const siAlternativa  = respuestas.filter(r => r.alternativa_carnica === 1).length;
   const noAlternativa  = respuestas.filter(r => r.alternativa_carnica === 0).length;
   const siReemplazo    = respuestas.filter(r => r.reemplazo_aderezo === 1).length;
@@ -252,25 +248,6 @@ function PageResumen({ respuestas }: { respuestas: Respuesta[] }) {
           {Object.entries(porSexo).map(([sexo, count]) => (
             <HorizBar key={sexo} label={sexo} count={count} total={total} color={sexoColors[sexo] || "#76955E"} />
           ))}
-        </div>
-      </div>
-
-      {/* Intención de consumo — cuadro separado */}
-      <div style={{ ...S.card, marginBottom: "18px" }}>
-        <div style={S.cardTitle}>🔄 Intención de Consumo</div>
-        <div style={{ marginBottom: "20px" }}>
-          <div style={{ fontSize: "12px", color: "#555", fontWeight: "600", marginBottom: "10px" }}>
-            ¿Consumirías este producto nuevamente?
-          </div>
-          <HorizBar label="Sí" count={siConsumiria}   total={total} color="#76955E" />
-          <HorizBar label="No" count={noConsumiria}   total={total} color="#E07070" />
-        </div>
-        <div>
-          <div style={{ fontSize: "12px", color: "#555", fontWeight: "600", marginBottom: "10px" }}>
-            ¿Recomendarías este producto a otra persona?
-          </div>
-          <HorizBar label="Sí" count={siRecomendaria}  total={total} color="#76955E" />
-          <HorizBar label="No" count={noRecomendaria}  total={total} color="#E07070" />
         </div>
       </div>
 
