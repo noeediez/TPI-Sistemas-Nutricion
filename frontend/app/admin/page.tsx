@@ -676,8 +676,8 @@ export default function AdminPanel() {
         </div>
 
         {page === "resumen"      && <PageResumen      respuestas={respuestas} />}
-        {page === "descriptivos" && <PageDescriptivos respuestas={respuestas} />}
-        {page === "afectivos"    && <PageAfectivos    respuestas={respuestas} />}
+        {page === "descriptivos" && <PageAfectivos respuestas={respuestas} />}
+        {page === "afectivos"    && <PageDescriptivos    respuestas={respuestas} />}
         {page === "comentarios"  && <PageComentarios  respuestas={respuestas} />}
         {page === "notas"        && <PageNotas />}
       </main>
