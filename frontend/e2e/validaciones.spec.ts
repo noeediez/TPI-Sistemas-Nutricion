@@ -7,7 +7,7 @@ import { test, expect } from "@playwright/test";
 async function irA(page: import("@playwright/test").Page, url: string) {
   await page.goto(url);
   await page.waitForLoadState("domcontentloaded");
-  await page.waitForLoadState("networkidle");
+  //await page.waitForLoadState("networkidle");
 }
  
 // ayuda para completar el Paso 1 correctamente
@@ -98,16 +98,16 @@ test.describe("Validaciones por paso", () => {
     // Paso 3
     await expect(page.locator("h1")).toContainText("Olfato", { timeout: 5000 });
     await page.locator('button:has-text("Muy agradable")').first().click();
-    await page.locator('button:has-text("Crocante")').click();
+    await page.locator('button:has-text("Crocante")').last().click();
     await page.locator('button:has-text("Excelente")').first().click();
-    await page.locator('button:has-text("Muy buena")').first().click();
+    await page.locator('button:has-text("Excelente")').nth(1).click();
     await page.locator('button:has-text("Siguiente")').click();
  
     // Paso 4
     await expect(page.locator("h1")).toContainText("Sabor", { timeout: 5000 });
-    await page.locator('button:has-text("Agradable")').first().click();
-    await page.locator('button:has-text("Muy agradable")').first().click();
-    await page.locator('button:has-text("Excelente")').first().click();
+    await page.getByRole('button', { name: 'Agradable', exact: true }).nth(0).click();
+    await page.getByRole('button', { name: 'Agradable', exact: true }).nth(1).click();
+    await page.getByRole('button', { name: 'Excelente', exact: true }).first().click();
     await page.locator('button:has-text("Siguiente")').click();
  
     // Paso 5: intentar enviar sin responder

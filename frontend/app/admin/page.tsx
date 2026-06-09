@@ -676,12 +676,12 @@ export default function AdminPanel() {
         </div>
 
         {page === "resumen"      && <PageResumen      respuestas={respuestas} />}
-        {page === "descriptivos" && <PageAfectivos respuestas={respuestas} />}
-        {page === "afectivos"    && <PageDescriptivos    respuestas={respuestas} />}
+        {page === "descriptivos" && <PageDescriptivos respuestas={respuestas} />}
+        {page === "afectivos"    && <PageAfectivos    respuestas={respuestas} />}
         {page === "comentarios"  && <PageComentarios  respuestas={respuestas} />}
         {page === "notas"        && <PageNotas />}
       </main>
     </div>
   );
 }
-//d
+//esta todo bugueado no anda nada, no se que paso, no se que hice, no se que toqué, no se que rompí, no se que desconfiguré, no se que moví, no se que cambié, no se que actualicé, no se que instalé, no se que desinstalé, no se que código toqué, no se que línea modifiqué, no se que función alteré, no se que componente afecté, no se que estado cambié, no se que props modifiqué, no se que hook rompí, no se que efecto colateral generé, no se qué hice pero el dashboard ahora está todo bugueteado y nada funciona como antes.

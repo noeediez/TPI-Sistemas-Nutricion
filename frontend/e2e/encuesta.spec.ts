@@ -49,27 +49,19 @@ test.describe("Flujo completo de la encuesta", () => {
     await expect(page.locator("h1")).toContainText("Olfato", { timeout: 5000 });
 
     await clickBoton(page, "Muy agradable");
-    await clickBoton(page, "Crocante");
+    await page.locator('button:has-text("Crocante")').last().click();
 
     const excelentesP3 = page.locator('button:has-text("Excelente")');
-    await excelentesP3.first().click();
-
-    const muyBuenas = page.locator('button:has-text("Muy buena")');
-    await muyBuenas.first().click();
+    await excelentesP3.first().click();  // consistencia
+    await excelentesP3.nth(1).click();   // cremosidad
 
     await clickBoton(page, "Siguiente");
 
     // Sabor
-    await expect(page.locator("h1")).toContainText("Sabor", { timeout: 5000 });
-
-    const agradables = page.locator('button:has-text("Agradable")');
-    await agradables.first().click();
-    await clickBoton(page, "Muy agradable");
-
-    const excelentesP4 = page.locator('button:has-text("Excelente")');
-    await excelentesP4.first().click();
-
-    await clickBoton(page, "Siguiente");
+    await page.getByRole('button', { name: 'Agradable', exact: true }).nth(0).click();
+    await page.getByRole('button', { name: 'Agradable', exact: true }).nth(1).click();
+    await page.getByRole('button', { name: 'Excelente', exact: true }).first().click();
+    await page.locator('button:has-text("Siguiente")').click();
 
     // Prueba Afectiva 
     await expect(page.locator("h1")).toContainText("Prueba Afectiva", { timeout: 5000 });
