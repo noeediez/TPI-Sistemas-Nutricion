@@ -327,7 +327,7 @@ function PageDescriptivos({ respuestas }: { respuestas: Respuesta[] }) {
   return (
     <div>
       <div style={S.pageHeader}>
-        <div style={S.pageTitle}>Resultados Descriptivos</div>
+        <div style={S.pageTitle}>Resultados Afectivos</div>
         <div style={S.pageSub}>Distribución de respuestas por atributo sensorial</div>
       </div>
 
@@ -397,7 +397,7 @@ function PageAfectivos({ respuestas }: { respuestas: Respuesta[] }) {
   return (
     <div>
       <div style={S.pageHeader}>
-        <div style={S.pageTitle}>Resultados Descriptivos</div>
+        <div style={S.pageTitle}>Resultados Afectivos</div>
         <div style={S.pageSub}>Gráfico de Araña — Atributos Sensoriales (escala 1–5)</div>
       </div>
 
@@ -625,8 +625,8 @@ export default function AdminPanel() {
 
   const navItems: { id: PageId; label: string; emoji: string }[] = [
     { id: "resumen",      label: "Resumen",                emoji: "" },
-    { id: "descriptivos", label: "Resultados Afectivos", emoji: "" },
-    { id: "afectivos",    label: "Resultados Descriptivos",    emoji: "" },
+    { id: "descriptivos", label: "Resultados Descriptivos", emoji: "" },
+    { id: "afectivos",    label: "Resultados Afectivos",    emoji: "" },
     { id: "comentarios",  label: "Comentarios",             emoji: "" },
     { id: "notas",        label: "Mis Notas",               emoji: "" },
   ];
