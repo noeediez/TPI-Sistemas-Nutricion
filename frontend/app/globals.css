@@ -11,25 +11,17 @@
   box-sizing: border-box;
 }
 
-html,
-body {
+html, body {
   min-height: 100vh;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  background: linear-gradient(
-    135deg,
-    #2e7d32 0%,
-    #43a047 40%,
-    #ff9800 100%
-  );
+  background: #F8F6EF;
   color: var(--dark);
 }
 
-a {
-  text-decoration: none;
-}
+a { text-decoration: none; }
 
 button {
   cursor: pointer;
@@ -37,9 +29,7 @@ button {
   transition: all 0.3s ease;
 }
 
-button:hover {
-  transform: translateY(-2px);
-}
+button:hover { transform: translateY(-2px); }
 
 .main-container {
   min-height: 100vh;
@@ -59,9 +49,7 @@ button:hover {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-.logo {
-  margin-bottom: 20px;
-}
+.logo { margin-bottom: 20px; }
 
 .title {
   font-size: 3rem;
@@ -91,4 +79,326 @@ button:hover {
   border-radius: 12px;
   font-size: 1rem;
   margin: 8px;
+}
+
+/* ── RESPONSIVE ── */
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  padding: 0 40px;
+}
+
+.hero-texto {
+  flex: 1;
+  min-width: 280px;
+}
+
+.hero-imagen {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  min-width: 280px;
+}
+
+.hero-titulo {
+  font-size: 72px;
+  color: #2E5E2C;
+  line-height: 0.95;
+  font-weight: 800;
+}
+
+.hero-botones {
+  margin-top: 40px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 40px;
+}
+
+.card-feature {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  text-align: center;
+}
+
+/* ── Botón "← Menú principal" (pill con borde verde visible) ── */
+.btn-volver {
+  background: transparent;
+  border: 2px solid #C8D4B0;
+  color: #76955E;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 12px 24px;
+  border-radius: 30px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    flex-direction: column;
+    padding: 30px 20px;
+    text-align: center;
+  }
+
+  .hero-titulo {
+    font-size: 42px;
+  }
+
+  /* ── CAMBIO: botones apilados y full-width (mismos colores/estilos) ── */
+  .hero-botones {
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .hero-botones a {
+    width: 100%;
+  }
+
+  .hero-botones button {
+    width: 100%;
+  }
+  /* ──────────────────────────────────────────────────────────────────── */
+
+  .hero-imagen img {
+    max-width: 280px !important;
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .cards-grid {
+    padding: 20px;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-titulo {
+    font-size: 34px;
+  }
+
+  .cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── RESPONSIVE ENCUESTA ── */
+.encuesta-main {
+  padding: 40px;
+}
+
+.encuesta-card {
+  padding: 40px;
+}
+
+@media (max-width: 768px) {
+  .encuesta-main {
+    padding: 16px;
+    align-items: flex-start;
+  }
+
+  .encuesta-card {
+    padding: 24px 16px;
+    border-radius: 20px;
+  }
+}
+
+/* ── RESPONSIVE INGREDIENTES ── */
+.ingredientes-main {
+  padding: 40px;
+}
+
+.ingredientes-titulo {
+  font-size: 52px;
+}
+
+.ingredientes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .ingredientes-main {
+    padding: 20px;
+  }
+
+  .ingredientes-titulo {
+    font-size: 36px;
+  }
+
+  .ingredientes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── RESPONSIVE ADMIN ── */
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #F8F6EF;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.admin-sidebar {
+  width: 210px;
+  flex-shrink: 0;
+  background: white;
+  border-right: 1px solid #EEE;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.admin-main-content {
+  flex: 1;
+  padding: 32px 32px 60px;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+.admin-hamburger {
+  display: none;
+  background: transparent;
+  border: 1px solid #EEE;
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.admin-overlay {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: -210px;
+    z-index: 100;
+    height: 100vh;
+    transition: left 0.3s ease;
+  }
+
+  .admin-sidebar.abierto {
+    left: 0;
+  }
+
+  .admin-hamburger {
+    display: block;
+  }
+
+  .admin-main-content {
+    padding: 16px 16px 40px;
+  }
+
+  .admin-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 99;
+  }
+
+  /* ── Cards del Panel de Resumen apiladas en mobile ── */
+  .admin-resumen-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Gráfico de Intención de Consumo: scroll horizontal en mobile ── */
+  .grafico-intencion {
+    overflow-x: auto;
+  }
+
+  .grafico-intencion-inner {
+    min-width: 520px;
+  }
+}
+
+/* ── Aviso / toast (reemplaza el alert() nativo de la encuesta) ── */
+@keyframes aviso-in {
+  from { opacity: 0; transform: translate(-50%, 16px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.aviso-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(46, 94, 44, 0.18);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+}
+
+.aviso-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: white;
+  border: 1px solid #E6E1CF;
+  border-left: 5px solid #76955E;
+  border-radius: 16px;
+  padding: 16px 22px;
+  max-width: 440px;
+  width: calc(100% - 40px);
+  box-shadow: 0 12px 32px rgba(46, 94, 44, 0.18);
+  z-index: 1001;
+  animation: aviso-in 0.28s ease;
+}
+
+.aviso-icono {
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #EFE4C7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.aviso-texto {
+  flex: 1;
+  font-size: 14px;
+  color: #2E5E2C;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.aviso-cerrar {
+  flex-shrink: 0;
+  background: #76955E;
+  color: white;
+  border: none;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
 }

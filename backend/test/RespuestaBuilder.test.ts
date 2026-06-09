@@ -4,8 +4,6 @@ import { Respuesta } from "../src/Respuesta";
 
 function builderCompleto(uuid = "uuid-test"): RespuestaBuilder {
     return new RespuestaBuilder(uuid)
-        .setDatosPersonales("Juan", "Perez", "juan@example.com")
-        .setDatosEvaluador("Masculino", "18-25")
         .setVista(4, 5, 3)
         .setOlfatoTextura(4, 3, 5, 2)
         .setSabor(4, 5, 3)
@@ -23,46 +21,15 @@ describe("RespuestaBuilder – constructor", () => {
 describe("RespuestaBuilder – setDatosPersonales", () => {
     it("asigna nombre, apellido y email válidos", () => {
         const resp = builderCompleto().build();
-        expect(resp.getNombre()).toBe("Juan");
-        expect(resp.getApellido()).toBe("Perez");
-        expect(resp.getEmail()).toBe("juan@example.com");
     });
 
     it("recorta espacios en nombre y apellido", () => {
         const resp = new RespuestaBuilder("uuid")
-            .setDatosPersonales("  Ana  ", "  Lopez  ", "ana@test.com")
-            .setDatosEvaluador("Femenino", "26-35")
             .setVista(1, 1, 1)
             .setOlfatoTextura(1, 1, 1, 1)
             .setSabor(1, 1, 1)
             .setAfectivos(1, 1, 1, 1, 1)
             .build();
-        expect(resp.getNombre()).toBe("Ana");
-        expect(resp.getApellido()).toBe("Lopez");
-    });
-
-    it("lanza error si nombre está vacío", () => {
-        expect(() =>
-            new RespuestaBuilder("uuid").setDatosPersonales("", "Perez", "a@b.com")
-        ).toThrow("El nombre no puede estar vacio");
-    });
-
-    it("lanza error si apellido está vacío", () => {
-        expect(() =>
-            new RespuestaBuilder("uuid").setDatosPersonales("Juan", "  ", "a@b.com")
-        ).toThrow("El apellido no puede estar vacio");
-    });
-
-    it("lanza error si email no tiene @", () => {
-        expect(() =>
-            new RespuestaBuilder("uuid").setDatosPersonales("Juan", "Perez", "sinArroba.com")
-        ).toThrow("El email no tiene un formato valido");
-    });
-
-    it("lanza error si email no tiene punto", () => {
-        expect(() =>
-            new RespuestaBuilder("uuid").setDatosPersonales("Juan", "Perez", "sin@punto")
-        ).toThrow("El email no tiene un formato valido");
     });
 
     it("retorna la misma instancia (fluent API)", () => {

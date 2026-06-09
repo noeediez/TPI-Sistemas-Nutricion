@@ -57,7 +57,7 @@ function pct(values: string[], target: string): number {
 
 function avgAge(edades: string[]): string {
   const nums = edades
-    .map((e) => parseInt("18-46"))
+    .map((e) => { const m = e.match(/\d+/); return m ? parseInt(m[0]) : NaN; })
     .filter((n) => !isNaN(n));
   if (!nums.length) return "—";
   return Math.round(nums.reduce((a, b) => a + b, 0) / nums.length) + " años";
@@ -199,52 +199,30 @@ function HorizBar({ label, count, total, color }: { label: string; count: number
 // ── Página Resumen ─────────────────────────────────────────────────────
 function PageResumen({ respuestas }: { respuestas: Respuesta[] }) {
   const total = respuestas.length;
-  const pctCompra =
-  total === 0
-    ? 0
-    : Math.round(
-        (respuestas.filter((r) => r.consumiria_nuevamente === 1).length /
-          total) *
-          100
-      );
 
-const pctRec =
-  total === 0
-    ? 0
-    : Math.round(
-        (respuestas.filter((r) => r.recomendaria === 1).length /
-          total) *
-          100
-      );
-  const calMedia = avg(respuestas.map((r) => r.satisfaccion_general));
-  const edadMedia = avgAge(respuestas.map((r) => r.rango_etario));
-  const ultima = respuestas.length ? timeSince(respuestas[0].created_at) : "—";
+  // conteo directo sin Math.round
+  const siConsumiria   = respuestas.filter(r => r.consumiria_nuevamente === 1).length;
+  const noConsumiria   = respuestas.filter(r => r.consumiria_nuevamente === 0).length;
+  const siRecomendaria = respuestas.filter(r => r.recomendaria === 1).length;
+  const noRecomendaria = respuestas.filter(r => r.recomendaria === 0).length;
+  const siAlternativa  = respuestas.filter(r => r.alternativa_carnica === 1).length;
+  const noAlternativa  = respuestas.filter(r => r.alternativa_carnica === 0).length;
+  const siReemplazo    = respuestas.filter(r => r.reemplazo_aderezo === 1).length;
+  const noReemplazo    = respuestas.filter(r => r.reemplazo_aderezo === 0).length;
 
-  const porEdad: Record<string, number> = {};
+  const calMedia  = avg(respuestas.map(r => r.satisfaccion_general));
+  const edadMedia = avgAge(respuestas.map(r => r.rango_etario));
+  const ultima    = respuestas.length ? timeSince(respuestas[0].created_at) : "—";
+
   const porSexo: Record<string, number> = {};
-  respuestas.forEach((r) => {
-    porEdad[r.rango_etario] = (porEdad[r.rango_etario] || 0) + 1;
-    porSexo[r.sexo] = (porSexo[r.sexo] || 0) + 1;
-  });
+  respuestas.forEach(r => { porSexo[r.sexo] = (porSexo[r.sexo] || 0) + 1; });
 
- const edadGroups = [
-  {
-    label: "18-25 años",
-    count: respuestas.filter((r) => r.rango_etario === "18-25").length,
-  },
-  {
-    label: "26-35 años",
-    count: respuestas.filter((r) => r.rango_etario === "26-35").length,
-  },
-  {
-    label: "36-50 años",
-    count: respuestas.filter((r) => r.rango_etario === "36-50").length,
-  },
-  {
-    label: "51+ años",
-    count: respuestas.filter((r) => r.rango_etario === "51+").length,
-  },
-];
+  const edadGroups = [
+    { label: "18-25 años", count: respuestas.filter(r => r.rango_etario === "18-25").length },
+    { label: "26-35 años", count: respuestas.filter(r => r.rango_etario === "26-35").length },
+    { label: "36-45 años", count: respuestas.filter(r => r.rango_etario === "36-45").length },
+    { label: "46+ años",   count: respuestas.filter(r => r.rango_etario === "46+").length },
+  ];
   const sexoColors: Record<string, string> = { Femenino: "#9B59B6", Masculino: "#5B8EAD", Otro: "#76955E" };
 
   return (
@@ -255,16 +233,17 @@ const pctRec =
       </div>
 
       <div style={S.metricGrid}>
-        <MetricCard icon="" value={String(total)}             label="Total de encuestas"  color="#76955E" />
-        <MetricCard icon="" value={edadMedia}                 label="Edad promedio"        color="#E7B511" />
-        <MetricCard icon="" value={ultima}                    label="Última respuesta"     color="#5B8EAD" />
+        <MetricCard icon="" value={String(total)}              label="Total de encuestas" color="#76955E" />
+        <MetricCard icon="" value={edadMedia}                  label="Edad promedio"       color="#E7B511" />
+        <MetricCard icon="" value={ultima}                     label="Última respuesta"    color="#5B8EAD" />
         <MetricCard icon="" value={`${calMedia.toFixed(1)}/5`} label="Calificación media"  color="#E07070" />
       </div>
 
-      <div className="two-col" style={S.twoCol}>
+      {/* Edad + Sexo */}
+      <div className="admin-resumen-grid" style={S.twoCol}>
         <div style={S.card}>
           <div style={S.cardTitle}>📊 Distribución por Edad</div>
-          {edadGroups.map((g) => (
+          {edadGroups.map(g => (
             <HorizBar key={g.label} label={g.label} count={g.count} total={total} color="#76955E" />
           ))}
         </div>
@@ -273,11 +252,25 @@ const pctRec =
           {Object.entries(porSexo).map(([sexo, count]) => (
             <HorizBar key={sexo} label={sexo} count={count} total={total} color={sexoColors[sexo] || "#76955E"} />
           ))}
-          <div style={{ marginTop: "20px" }}>
-            <div style={{ ...S.cardTitle, marginBottom: "10px" }}>🔄 Intención de consumo</div>
-            <HorizBar label="Consumiría"    count={Math.round(total * pctCompra / 100)} total={total} color="#76955E" />
-            <HorizBar label="Recomendaría" count={Math.round(total * pctRec / 100)}    total={total} color="#97C459" />
+        </div>
+      </div>
+
+      {/* Alternativa cárnica + Reemplazo aderezo — cuadro separado */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>🌱 Preferencias de Consumo</div>
+        <div style={{ marginBottom: "20px" }}>
+          <div style={{ fontSize: "12px", color: "#555", fontWeight: "600", marginBottom: "10px" }}>
+            ¿Consumirías estos nuggets como alternativa a productos cárnicos?
           </div>
+          <HorizBar label="Sí" count={siAlternativa}  total={total} color="#76955E" />
+          <HorizBar label="No" count={noAlternativa}  total={total} color="#E07070" />
+        </div>
+        <div>
+          <div style={{ fontSize: "12px", color: "#555", fontWeight: "600", marginBottom: "10px" }}>
+            ¿Usarías este dip como reemplazo a aderezos industriales?
+          </div>
+          <HorizBar label="Sí" count={siReemplazo}    total={total} color="#76955E" />
+          <HorizBar label="No" count={noReemplazo}    total={total} color="#E07070" />
         </div>
       </div>
     </div>
@@ -287,20 +280,25 @@ const pctRec =
 // ── Página Descriptivos ────────────────────────────────────────────────
 function PageDescriptivos({ respuestas }: { respuestas: Respuesta[] }) {
   const gustoData = [
-    { label: "No me gustó nada (1)", cantidad: respuestas.filter((r) => r.satisfaccion_general === 1).length, color: "#E07070" },
-    { label: "No me gustó (2)",      cantidad: respuestas.filter((r) => r.satisfaccion_general === 2).length, color: "#E0A860" },
-    { label: "Neutro (3)",           cantidad: respuestas.filter((r) => r.satisfaccion_general === 3).length, color: "#E7C511" },
-    { label: "Me gustó (4)",         cantidad: respuestas.filter((r) => r.satisfaccion_general === 4).length, color: "#A8C878" },
-    { label: "Me gustó mucho (5)",   cantidad: respuestas.filter((r) => r.satisfaccion_general === 5).length, color: "#76955E" },
+    { label: "Malo (1)",      cantidad: respuestas.filter(r => r.satisfaccion_general === 1).length, color: "#E07070" },
+    { label: "Regular (2)",   cantidad: respuestas.filter(r => r.satisfaccion_general === 2).length, color: "#E0A860" },
+    { label: "Bueno (3)",     cantidad: respuestas.filter(r => r.satisfaccion_general === 3).length, color: "#E7C511" },
+    { label: "Muy bueno (4)", cantidad: respuestas.filter(r => r.satisfaccion_general === 4).length, color: "#A8C878" },
+    { label: "Excelente (5)", cantidad: respuestas.filter(r => r.satisfaccion_general === 5).length, color: "#76955E" },
   ];
 
-   const intentData = [
-  { label: "Definitivamente no", cantidad: respuestas.filter(r => r.consumiria_nuevamente === 1).length, color: "#E07070" },
-  { label: "Probablemente no",   cantidad: respuestas.filter(r => r.consumiria_nuevamente === 2).length, color: "#E0A860" },
-  { label: "No sé",              cantidad: respuestas.filter(r => r.consumiria_nuevamente === 3).length, color: "#E7C511" },
-  { label: "Probablemente sí",   cantidad: respuestas.filter(r => r.consumiria_nuevamente === 4).length, color: "#A8C878" },
-  { label: "Definitivamente sí", cantidad: respuestas.filter(r => r.consumiria_nuevamente === 5).length, color: "#76955E" },
-];
+  // consumiria_nuevamente y recomendaria se guardan como 0/1 (No/Sí)
+  const totalConsumiria  = respuestas.filter(r => r.consumiria_nuevamente === 1).length;
+  const totalNoConsumiria = respuestas.filter(r => r.consumiria_nuevamente === 0).length;
+  const totalRecomendaria = respuestas.filter(r => r.recomendaria === 1).length;
+  const totalNoRecomendaria = respuestas.filter(r => r.recomendaria === 0).length;
+
+  const intentData = [
+    { label: "Consumiría nuevamente",    cantidad: totalConsumiria,    color: "#76955E" },
+    { label: "No consumiría nuevamente", cantidad: totalNoConsumiria,  color: "#E07070" },
+    { label: "Recomendaría",             cantidad: totalRecomendaria,  color: "#97C459" },
+    { label: "No recomendaría",          cantidad: totalNoRecomendaria, color: "#E0A860" },
+  ];
 
   const total = respuestas.length;
   const positivo = respuestas.filter((r) => r.satisfaccion_general >= 4).length;
@@ -351,17 +349,9 @@ function PageDescriptivos({ respuestas }: { respuestas: Respuesta[] }) {
         {total === 0 ? (
           <p style={{ textAlign: "center", color: "#ccc", padding: "48px 0" }}>Sin datos aún</p>
         ) : (
-          <ResponsiveContainer width="100%" height={220}>
-            <BarChart data={intentData} layout="vertical" margin={{ top: 5, right: 20, left: 120, bottom: 5 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#F0F0F0" horizontal={false} />
-              <XAxis type="number" allowDecimals={false} tick={{ fontSize: 11, fill: "#bbb" }} />
-              <YAxis type="category" dataKey="label" tick={{ fontSize: 11, fill: "#888" }} width={115} />
-              <Tooltip formatter={(v) => [v, "Respuestas"]} cursor={{ fill: "#F8F6EF" }} />
-              <Bar dataKey="cantidad" radius={[0, 8, 8, 0]}>
-                {intentData.map((e, i) => <Cell key={i} fill={e.color} />)}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
+          intentData.map((d) => (
+            <HorizBar key={d.label} label={d.label} count={d.cantidad} total={total} color={d.color} />
+          ))
         )}
       </div>
     </div>
@@ -376,7 +366,7 @@ function PageAfectivos({ respuestas }: { respuestas: Respuesta[] }) {
     { categoria: "Color",        promedio: avg(respuestas.map((r) => r.color_atractivo)) },
     { categoria: "Apariencia",   promedio: avg(respuestas.map((r) => r.apariencia_general)) },
     { categoria: "Aspecto dip",  promedio: avg(respuestas.map((r) => r.dip_aspecto)) },
-    { categoria: "Aroma", promedio: avg(respuestas.map((r) => r.aroma)) },
+    { categoria: "Aroma",        promedio: avg(respuestas.map((r) => r.aroma)) },
     { categoria: "Textura",      promedio: avg(respuestas.map((r) => r.textura_nuggets)) },
     { categoria: "Consistencia", promedio: avg(respuestas.map((r) => r.consistencia_interna)) },
     { categoria: "Cremosidad",   promedio: avg(respuestas.map((r) => r.cremosidad_dip)) },
@@ -419,20 +409,9 @@ function PageAfectivos({ respuestas }: { respuestas: Respuesta[] }) {
         )}
       </div>
 
-      {/* Chips de atributos */}
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))",
-        gap: "10px",
-      }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "10px" }}>
         {radarData.map((d) => (
-          <div key={d.categoria} style={{
-            background: "white",
-            border: "1px solid #EEE",
-            borderRadius: "12px",
-            padding: "14px",
-            textAlign: "center",
-          }}>
+          <div key={d.categoria} style={{ background: "white", border: "1px solid #EEE", borderRadius: "12px", padding: "14px", textAlign: "center" }}>
             <div style={{ fontSize: "20px", fontWeight: "800", color: "#76955E" }}>
               {d.promedio.toFixed(1)}
             </div>
@@ -483,15 +462,7 @@ function PageComentarios({ respuestas }: { respuestas: Respuesta[] }) {
           placeholder="Buscar comentarios..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{
-            flex: 1,
-            padding: "10px 14px",
-            borderRadius: "30px",
-            border: "1px solid #DDD",
-            fontSize: "13px",
-            outline: "none",
-            background: "white",
-          }}
+          style={{ flex: 1, padding: "10px 14px", borderRadius: "30px", border: "1px solid #DDD", fontSize: "13px", outline: "none", background: "white" }}
         />
         <div style={{ fontSize: "13px", color: "#aaa", display: "flex", alignItems: "center" }}>
           {filtered.length} comentarios
@@ -507,32 +478,16 @@ function PageComentarios({ respuestas }: { respuestas: Respuesta[] }) {
           {filtered.map((r) => {
             const av = avatarColor(r.sexo);
             return (
-              <div key={r.id} style={{
-                background: "white",
-                border: "1px solid #EEE",
-                borderRadius: "14px",
-                padding: "16px 18px",
-              }}>
+              <div key={r.id} style={{ background: "white", border: "1px solid #EEE", borderRadius: "14px", padding: "16px 18px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px" }}>
-                  <div style={{
-                    width: "32px", height: "32px", borderRadius: "50%",
-                    background: av.bg, color: av.text,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: "12px", fontWeight: "700", flexShrink: 0,
-                  }}>
+                  <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: av.bg, color: av.text, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "12px", fontWeight: "700", flexShrink: 0 }}>
                     {initials(r.sexo)}
                   </div>
                   <div style={{ fontSize: "12px", color: "#888" }}>
                     <strong style={{ color: "#555" }}>{r.sexo || "—"}</strong>
                     {r.rango_etario ? ` · ${r.rango_etario} años` : ""}
                   </div>
-                  <span style={{
-                    marginLeft: "4px",
-                    background: "#F8F6EF",
-                    color: scoreColor(r.satisfaccion_general),
-                    fontSize: "11px", fontWeight: "700",
-                    padding: "2px 10px", borderRadius: "20px",
-                  }}>
+                  <span style={{ marginLeft: "4px", background: "#F8F6EF", color: scoreColor(r.satisfaccion_general), fontSize: "11px", fontWeight: "700", padding: "2px 10px", borderRadius: "20px" }}>
                     {r.satisfaccion_general}/5 ★
                   </span>
                   <span style={{ marginLeft: "auto", fontSize: "11px", color: "#bbb" }}>
@@ -576,18 +531,7 @@ function PageNotas() {
           value={notas}
           onChange={handleChange}
           placeholder="Escribí tus observaciones sobre los resultados de la encuesta sensorial..."
-          style={{
-            width: "100%",
-            minHeight: "360px",
-            border: "none",
-            background: "transparent",
-            color: "#444",
-            fontSize: "14px",
-            resize: "vertical",
-            outline: "none",
-            lineHeight: 1.8,
-            fontFamily: "inherit",
-          }}
+          style={{ width: "100%", minHeight: "360px", border: "none", background: "transparent", color: "#444", fontSize: "14px", resize: "vertical", outline: "none", lineHeight: 1.8, fontFamily: "inherit" }}
         />
       </div>
     </div>
@@ -601,9 +545,13 @@ export default function AdminPanel() {
   const [loading, setLoading]       = useState(true);
   const [error, setError]           = useState<string | null>(null);
   const [page, setPage]             = useState<PageId>("resumen");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarAbierto, setSidebarAbierto] = useState(false);
+
+  // ── TAREA 7: Badge que parpadea cuando llega una respuesta nueva en vivo
+  const [nuevaRespuesta, setNuevaRespuesta] = useState(false);
 
   useEffect(() => {
+    // Carga inicial de datos
     (async () => {
       const { data, error } = await supabase
         .from("respuestas")
@@ -614,6 +562,24 @@ export default function AdminPanel() {
       else setRespuestas(data ?? []);
       setLoading(false);
     })();
+
+    // ── TAREA 7: Suscripción Realtime — el dashboard se actualiza solo ──
+    const channel = supabase
+      .channel("respuestas-realtime")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "respuestas" },
+        (payload) => {
+          setRespuestas((prev) => [payload.new as Respuesta, ...prev]);
+          setNuevaRespuesta(true);
+          setTimeout(() => setNuevaRespuesta(false), 3000);
+        }
+      )
+      .subscribe();
+
+    // Limpiar la suscripción cuando el componente se desmonta
+    return () => { supabase.removeChannel(channel); };
+    // ── Fin TAREA 7 ───────────────────────────────────────────────────
   }, []);
 
   if (loading) {
@@ -639,31 +605,41 @@ export default function AdminPanel() {
   }
 
   const navItems: { id: PageId; label: string; emoji: string }[] = [
-    { id: "resumen",      label: "Resumen",               emoji: "" },
+    { id: "resumen",      label: "Resumen",                emoji: "" },
     { id: "descriptivos", label: "Resultados Descriptivos", emoji: "" },
-    { id: "afectivos",    label: "Resultados Afectivos",   emoji: "" },
-    { id: "comentarios",  label: "Comentarios",            emoji: "" },
-    { id: "notas",        label: "Mis Notas",              emoji: "" },
+    { id: "afectivos",    label: "Resultados Afectivos",       emoji: "" },
+    { id: "comentarios",  label: "Comentarios",             emoji: "" },
+    { id: "notas",        label: "Mis Notas",               emoji: "" },
   ];
 
   return (
-    <div className="admin-app" style={S.app}>
-      {/* Overlay mobile */}
-      {sidebarOpen && (
-        <div
-          onClick={() => setSidebarOpen(false)}
-          style={{
-            position: "fixed", inset: 0,
-            background: "rgba(0,0,0,0.35)", zIndex: 90,
-          }}
-        />
+    <div className="admin-layout">
+      {sidebarAbierto && (
+        <div className="admin-overlay" onClick={() => setSidebarAbierto(false)} />
+      )}
+
+      {/* Badge de respuesta nueva en vivo */}
+      {nuevaRespuesta && (
+        <div style={{
+          position: "fixed",
+          top: "20px",
+          right: "20px",
+          background: "#76955E",
+          color: "white",
+          padding: "10px 18px",
+          borderRadius: "20px",
+          fontWeight: "700",
+          fontSize: "13px",
+          zIndex: 9999,
+          boxShadow: "0 4px 16px rgba(0,0,0,0.2)",
+          animation: "fadeIn 0.3s ease",
+        }}>
+          🟢 Nueva respuesta recibida
+        </div>
       )}
 
       {/* Sidebar */}
-      <div
-        className={sidebarOpen ? "admin-sidebar admin-sidebar--open" : "admin-sidebar"}
-        style={S.sidebar}
-      >
+      <div className={`admin-sidebar ${sidebarAbierto ? "abierto" : ""}`}>
         <div style={S.brand}>
           <div style={S.brandName}>🥑 Dip & Crunch</div>
           <div style={S.brandSub}>Panel de Control</div>
@@ -683,11 +659,7 @@ export default function AdminPanel() {
         <div style={{ marginTop: "auto", padding: "16px 18px 0", borderTop: "1px solid #EEE" }}>
           <button
             onClick={() => router.push("/")}
-            style={{
-              display: "flex", alignItems: "center", gap: "6px",
-              background: "transparent", border: "none",
-              fontSize: "12px", color: "#bbb", cursor: "pointer", padding: "8px 0",
-            }}
+            style={{ background: "none", border: "none", color: "#bbb", fontSize: "12px", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", gap: "6px" }}
           >
             ← Menú principal
           </button>
@@ -695,36 +667,21 @@ export default function AdminPanel() {
       </div>
 
       {/* Main */}
-      <main style={S.main}>
-        {/* Hamburger bar — solo visible en mobile via CSS */}
-        <div className="admin-mobile-bar">
-          <button
-            onClick={() => setSidebarOpen(true)}
-            style={{
-              background: "none", border: "none", cursor: "pointer",
-              display: "flex", flexDirection: "column", gap: "5px", padding: "4px",
-            }}
-          >
-            <span style={{ display: "block", width: "22px", height: "2px", background: "#555" }} />
-            <span style={{ display: "block", width: "22px", height: "2px", background: "#555" }} />
-            <span style={{ display: "block", width: "22px", height: "2px", background: "#555" }} />
-          </button>
-          <span style={{ fontWeight: "700", fontSize: "14px", color: "#333" }}>
-            {navItems.find(n => n.id === page)?.label ?? "Panel"}
-          </span>
-          <span style={S.adminBadge}>Admin</span>
-        </div>
-
+      <main className="admin-main-content">
+        <button className="admin-hamburger" onClick={() => setSidebarAbierto(true)}>
+          ☰ Menú
+        </button>
         <div style={S.topBar}>
           <span style={S.adminBadge}>Administradora</span>
         </div>
 
         {page === "resumen"      && <PageResumen      respuestas={respuestas} />}
-        {page === "descriptivos" && <PageDescriptivos respuestas={respuestas} />}
-        {page === "afectivos"    && <PageAfectivos    respuestas={respuestas} />}
+        {page === "descriptivos" && <PageAfectivos respuestas={respuestas} />}
+        {page === "afectivos"    && <PageDescriptivos    respuestas={respuestas} />}
         {page === "comentarios"  && <PageComentarios  respuestas={respuestas} />}
         {page === "notas"        && <PageNotas />}
       </main>
     </div>
-  ); /////////////prueba a a a 
+  );
 }
+//d

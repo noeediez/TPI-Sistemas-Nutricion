@@ -15,7 +15,7 @@ export default function AdminLoginPage() {
     setError("");
     setCargando(true);
 
-    if (usuario === "admin" && contrasena === "admin123") {
+    if (usuario === "admin" && contrasena === process.env.NEXT_PUBLIC_ADMIN_SECRET) {
       sessionStorage.setItem("admin_autenticado", "true");
       router.push("/admin");
     } else {
@@ -234,26 +234,8 @@ export default function AdminLoginPage() {
           >
             {cargando ? "Verificando..." : "Ingresar"}
           </button>
-        </form>
-
-        {/* Credenciales de prueba */}
-        <p style={{ 
-          textAlign: "center",
-            marginTop: "20px",
-            color: "#bbb",
-            fontSize: "12px",
-            lineHeight: "1.6",
-          }}
-        >
-        Credenciales de prueba:
-          <br />
-          <code style={{ color: "#999" }}>admin / admin123</code>
-        </p>
+        </form>      
       </div>
     </main>
   );
 }
-
-// para ver para ver
- //para ver cver cer 
- 
