@@ -57,7 +57,7 @@ function pct(values: string[], target: string): number {
 
 function avgAge(edades: string[]): string {
   const nums = edades
-    .map((e) => parseInt("18-46"))
+    .map((e) => { const m = e.match(/\d+/); return m ? parseInt(m[0]) : NaN; })
     .filter((n) => !isNaN(n));
   if (!nums.length) return "—";
   return Math.round(nums.reduce((a, b) => a + b, 0) / nums.length) + " años";
@@ -199,33 +199,29 @@ function HorizBar({ label, count, total, color }: { label: string; count: number
 // ── Página Resumen ─────────────────────────────────────────────────────
 function PageResumen({ respuestas }: { respuestas: Respuesta[] }) {
   const total = respuestas.length;
-  const pctCompra =
-    total === 0
-      ? 0
-      : Math.round(
-          (respuestas.filter((r) => r.consumiria_nuevamente === 1).length / total) * 100
-        );
 
-  const pctRec =
-    total === 0
-      ? 0
-      : Math.round(
-          (respuestas.filter((r) => r.recomendaria === 1).length / total) * 100
-        );
-  const calMedia = avg(respuestas.map((r) => r.satisfaccion_general));
-  const edadMedia = avgAge(respuestas.map((r) => r.rango_etario));
-  const ultima = respuestas.length ? timeSince(respuestas[0].created_at) : "—";
+  // conteo directo sin Math.round
+  const siConsumiria   = respuestas.filter(r => r.consumiria_nuevamente === 1).length;
+  const noConsumiria   = respuestas.filter(r => r.consumiria_nuevamente === 0).length;
+  const siRecomendaria = respuestas.filter(r => r.recomendaria === 1).length;
+  const noRecomendaria = respuestas.filter(r => r.recomendaria === 0).length;
+  const siAlternativa  = respuestas.filter(r => r.alternativa_carnica === 1).length;
+  const noAlternativa  = respuestas.filter(r => r.alternativa_carnica === 0).length;
+  const siReemplazo    = respuestas.filter(r => r.reemplazo_aderezo === 1).length;
+  const noReemplazo    = respuestas.filter(r => r.reemplazo_aderezo === 0).length;
+
+  const calMedia  = avg(respuestas.map(r => r.satisfaccion_general));
+  const edadMedia = avgAge(respuestas.map(r => r.rango_etario));
+  const ultima    = respuestas.length ? timeSince(respuestas[0].created_at) : "—";
 
   const porSexo: Record<string, number> = {};
-  respuestas.forEach((r) => {
-    porSexo[r.sexo] = (porSexo[r.sexo] || 0) + 1;
-  });
+  respuestas.forEach(r => { porSexo[r.sexo] = (porSexo[r.sexo] || 0) + 1; });
 
   const edadGroups = [
-    { label: "18-25 años", count: respuestas.filter((r) => r.rango_etario === "18-25").length },
-    { label: "26-35 años", count: respuestas.filter((r) => r.rango_etario === "26-35").length },
-    { label: "36-50 años", count: respuestas.filter((r) => r.rango_etario === "36-50").length },
-    { label: "51+ años",   count: respuestas.filter((r) => r.rango_etario === "51+").length },
+    { label: "18-25 años", count: respuestas.filter(r => r.rango_etario === "18-25").length },
+    { label: "26-35 años", count: respuestas.filter(r => r.rango_etario === "26-35").length },
+    { label: "36-45 años", count: respuestas.filter(r => r.rango_etario === "36-45").length },
+    { label: "46+ años",   count: respuestas.filter(r => r.rango_etario === "46+").length },
   ];
   const sexoColors: Record<string, string> = { Femenino: "#9B59B6", Masculino: "#5B8EAD", Otro: "#76955E" };
 
@@ -243,10 +239,11 @@ function PageResumen({ respuestas }: { respuestas: Respuesta[] }) {
         <MetricCard icon="" value={`${calMedia.toFixed(1)}/5`} label="Calificación media"  color="#E07070" />
       </div>
 
+      {/* Edad + Sexo */}
       <div className="admin-resumen-grid" style={S.twoCol}>
         <div style={S.card}>
           <div style={S.cardTitle}>📊 Distribución por Edad</div>
-          {edadGroups.map((g) => (
+          {edadGroups.map(g => (
             <HorizBar key={g.label} label={g.label} count={g.count} total={total} color="#76955E" />
           ))}
         </div>
@@ -255,11 +252,44 @@ function PageResumen({ respuestas }: { respuestas: Respuesta[] }) {
           {Object.entries(porSexo).map(([sexo, count]) => (
             <HorizBar key={sexo} label={sexo} count={count} total={total} color={sexoColors[sexo] || "#76955E"} />
           ))}
-          <div style={{ marginTop: "20px" }}>
-            <div style={{ ...S.cardTitle, marginBottom: "10px" }}>🔄 Intención de consumo</div>
-            <HorizBar label="Consumiría"    count={Math.round(total * pctCompra / 100)} total={total} color="#76955E" />
-            <HorizBar label="Recomendaría" count={Math.round(total * pctRec / 100)}    total={total} color="#97C459" />
+        </div>
+      </div>
+
+      {/* Intención de consumo — cuadro separado */}
+      <div style={{ ...S.card, marginBottom: "18px" }}>
+        <div style={S.cardTitle}>🔄 Intención de Consumo</div>
+        <div style={{ marginBottom: "20px" }}>
+          <div style={{ fontSize: "12px", color: "#555", fontWeight: "600", marginBottom: "10px" }}>
+            ¿Consumirías este producto nuevamente?
           </div>
+          <HorizBar label="Sí" count={siConsumiria}   total={total} color="#76955E" />
+          <HorizBar label="No" count={noConsumiria}   total={total} color="#E07070" />
+        </div>
+        <div>
+          <div style={{ fontSize: "12px", color: "#555", fontWeight: "600", marginBottom: "10px" }}>
+            ¿Recomendarías este producto a otra persona?
+          </div>
+          <HorizBar label="Sí" count={siRecomendaria}  total={total} color="#76955E" />
+          <HorizBar label="No" count={noRecomendaria}  total={total} color="#E07070" />
+        </div>
+      </div>
+
+      {/* Alternativa cárnica + Reemplazo aderezo — cuadro separado */}
+      <div style={S.card}>
+        <div style={S.cardTitle}>🌱 Preferencias de Consumo</div>
+        <div style={{ marginBottom: "20px" }}>
+          <div style={{ fontSize: "12px", color: "#555", fontWeight: "600", marginBottom: "10px" }}>
+            ¿Consumirías estos nuggets como alternativa a productos cárnicos?
+          </div>
+          <HorizBar label="Sí" count={siAlternativa}  total={total} color="#76955E" />
+          <HorizBar label="No" count={noAlternativa}  total={total} color="#E07070" />
+        </div>
+        <div>
+          <div style={{ fontSize: "12px", color: "#555", fontWeight: "600", marginBottom: "10px" }}>
+            ¿Usarías este dip como reemplazo a aderezos industriales?
+          </div>
+          <HorizBar label="Sí" count={siReemplazo}    total={total} color="#76955E" />
+          <HorizBar label="No" count={noReemplazo}    total={total} color="#E07070" />
         </div>
       </div>
     </div>
@@ -269,19 +299,24 @@ function PageResumen({ respuestas }: { respuestas: Respuesta[] }) {
 // ── Página Descriptivos ────────────────────────────────────────────────
 function PageDescriptivos({ respuestas }: { respuestas: Respuesta[] }) {
   const gustoData = [
-    { label: "No me gustó nada (1)", cantidad: respuestas.filter((r) => r.satisfaccion_general === 1).length, color: "#E07070" },
-    { label: "No me gustó (2)",      cantidad: respuestas.filter((r) => r.satisfaccion_general === 2).length, color: "#E0A860" },
-    { label: "Neutro (3)",           cantidad: respuestas.filter((r) => r.satisfaccion_general === 3).length, color: "#E7C511" },
-    { label: "Me gustó (4)",         cantidad: respuestas.filter((r) => r.satisfaccion_general === 4).length, color: "#A8C878" },
-    { label: "Me gustó mucho (5)",   cantidad: respuestas.filter((r) => r.satisfaccion_general === 5).length, color: "#76955E" },
+    { label: "Malo (1)",      cantidad: respuestas.filter(r => r.satisfaccion_general === 1).length, color: "#E07070" },
+    { label: "Regular (2)",   cantidad: respuestas.filter(r => r.satisfaccion_general === 2).length, color: "#E0A860" },
+    { label: "Bueno (3)",     cantidad: respuestas.filter(r => r.satisfaccion_general === 3).length, color: "#E7C511" },
+    { label: "Muy bueno (4)", cantidad: respuestas.filter(r => r.satisfaccion_general === 4).length, color: "#A8C878" },
+    { label: "Excelente (5)", cantidad: respuestas.filter(r => r.satisfaccion_general === 5).length, color: "#76955E" },
   ];
 
+  // consumiria_nuevamente y recomendaria se guardan como 0/1 (No/Sí)
+  const totalConsumiria  = respuestas.filter(r => r.consumiria_nuevamente === 1).length;
+  const totalNoConsumiria = respuestas.filter(r => r.consumiria_nuevamente === 0).length;
+  const totalRecomendaria = respuestas.filter(r => r.recomendaria === 1).length;
+  const totalNoRecomendaria = respuestas.filter(r => r.recomendaria === 0).length;
+
   const intentData = [
-    { label: "Definitivamente no", cantidad: respuestas.filter(r => r.consumiria_nuevamente === 1).length, color: "#E07070" },
-    { label: "Probablemente no",   cantidad: respuestas.filter(r => r.consumiria_nuevamente === 2).length, color: "#E0A860" },
-    { label: "No sé",              cantidad: respuestas.filter(r => r.consumiria_nuevamente === 3).length, color: "#E7C511" },
-    { label: "Probablemente sí",   cantidad: respuestas.filter(r => r.consumiria_nuevamente === 4).length, color: "#A8C878" },
-    { label: "Definitivamente sí", cantidad: respuestas.filter(r => r.consumiria_nuevamente === 5).length, color: "#76955E" },
+    { label: "Consumiría nuevamente",    cantidad: totalConsumiria,    color: "#76955E" },
+    { label: "No consumiría nuevamente", cantidad: totalNoConsumiria,  color: "#E07070" },
+    { label: "Recomendaría",             cantidad: totalRecomendaria,  color: "#97C459" },
+    { label: "No recomendaría",          cantidad: totalNoRecomendaria, color: "#E0A860" },
   ];
 
   const total = respuestas.length;

@@ -16,8 +16,9 @@ function abrirDB(): Promise<IDBDatabase> {
   });
 }
 
-export async function encolarVoto(voto: Record<string, unknown>): Promise<void> {
-  const db = await abrirDB();
+/** Guarda (o sobreescribe) un voto en la cola local. */
+export async function saveToQueue(vote: Record<string, unknown>): Promise<void> {
+  const db = await openDB();
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, "readwrite");
     tx.objectStore(STORE_NAME).put(voto);
@@ -25,6 +26,9 @@ export async function encolarVoto(voto: Record<string, unknown>): Promise<void> 
     tx.onerror    = () => reject(tx.error);
   });
 }
+
+// alias para compatibilidad
+export const encolarVoto = saveToQueue;
 
 export async function obtenerVotosPendientes(): Promise<Record<string, unknown>[]> {
   const db = await abrirDB();
