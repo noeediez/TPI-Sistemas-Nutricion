@@ -649,7 +649,7 @@ export default function AdminPanel() {
           <div
             key={n.id}
             style={S.navItem(page === n.id)}
-            onClick={() => { setPage(n.id); setSidebarOpen(false); }}
+            onClick={() => { setPage(n.id); setSidebarAbierto(false); }}
           >
             <span>{n.emoji}</span>
             <span>{n.label}</span>
