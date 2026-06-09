@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import Anthropic from "@anthropic-ai/sdk";
 import { ChatFacade } from "backend/src/FACADE/ChatFacade";
 
 export async function POST(request: NextRequest) {
@@ -14,7 +15,8 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-        const facade = new ChatFacade();
+        const cliente = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+        const facade = new ChatFacade(cliente);
         const respuesta = await facade.responder(body.mensaje);
         return NextResponse.json({ respuesta }, { status: 200 });
     } catch (error: any) {
