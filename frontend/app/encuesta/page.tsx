@@ -608,8 +608,9 @@ export default function EncuestaPage() {
                     .upsert(payload, { onConflict: "client_uuid" });
 
                   if (error) {
-                    console.error("SUPABASE ERROR:", error);
-                    try {
+  console.error("SUPABASE ERROR:", JSON.stringify(error, null, 2));
+  alert("Error: " + error.message + " | Code: " + error.code);
+                    try { 
                       const { encolarVoto } = await import("@/lib/voteQueue");
                       await encolarVoto(payload);
                     } catch { /* ignorar si no disponible */ }
