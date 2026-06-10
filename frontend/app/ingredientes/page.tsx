@@ -90,7 +90,7 @@ export default function IngredientesPage() {
         >
           <div style={{ marginBottom: "28px" }}>
             <h2 style={{ margin: 0, color: "#2E5E2C", fontSize: "22px", fontWeight: "800" }}>
-              Nuggets Vegetales
+              Nuggets Vegetarianos
             </h2>
             <p style={{ margin: 0, color: "#AAA", fontSize: "13px" }}>
               {nuggets.length} ingredientes
