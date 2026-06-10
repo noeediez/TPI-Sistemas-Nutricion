@@ -197,6 +197,28 @@ export default function EncuestaPage() {
     }).catch(() => {/* falla silenciosamente si el módulo no está disponible */});
   }, []);
 
+  // Reintento automático cuando vuelve la conexión y hay una respuesta pendiente
+  useEffect(() => {
+    if (enviado !== "offline" && enviado !== "error") return;
+
+    const intentarReenvio = async () => {
+      if (!navigator.onLine) return;
+      try {
+        const { syncPendingVotes } = await import("@/lib/syncWorker");
+        await syncPendingVotes();
+        // Si la cola quedó vacía, el voto se envió exitosamente
+        const { obtenerVotosPendientes } = await import("@/lib/voteQueue");
+        const pendientes = await obtenerVotosPendientes();
+        if (pendientes.length === 0) {
+          setEnviado("ok");
+        }
+      } catch { /* ignorar */ }
+    };
+
+    window.addEventListener("online", intentarReenvio);
+    return () => window.removeEventListener("online", intentarReenvio);
+  }, [enviado]);
+
   const [consumiriaAlternativa, setConsumiriaAlternativa] = useState("");
   const [consumiriaDip, setConsumiriaDip] = useState("");
 
