@@ -201,7 +201,7 @@ export default function EncuestaPage() {
 
   // ── useEffect 2: reintento directo cuando vuelve la conexión ────────────
   useEffect(() => {
-    if ((enviado !== "offline" && enviado !== "error") || !pendingPayload) return;
+    if (enviado === "ok" || enviado === "idle" || !pendingPayload) return;
 
     const intentarReenvio = async () => {
       if (!navigator.onLine) return;
@@ -618,9 +618,9 @@ export default function EncuestaPage() {
                     setEnviado("error");
                     return;
                   }
-
-                  setEnviando(false);
-                  setEnviado("ok");
+                    setPendingPayload(null);  // ← agregar esta línea
+                     setEnviando(false);
+                    setEnviado("ok");
                 } else {
                   try {
                     const { encolarVoto } = await import("@/lib/voteQueue");
