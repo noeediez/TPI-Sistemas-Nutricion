@@ -29,7 +29,6 @@ interface NavegacionProps {
   esUltimo?: boolean;
 }
 
-// Escalas reutilizables
 const ESCALA_ATRACTIVO: OpcionEscala[] = [
   { valor: 5, etiqueta: "Muy atractivo" },
   { valor: 4, etiqueta: "Atractivo" },
@@ -70,7 +69,6 @@ const ESCALA_GENERAL: OpcionEscala[] = [
   { valor: 1, etiqueta: "Malo" },
 ];
 
-/** Genera o recupera el UUID del cliente desde localStorage. */
 function getOrCreateClientUuid(): string {
   const KEY = "encuesta_client_uuid";
   let uuid = localStorage.getItem(KEY);
@@ -81,7 +79,6 @@ function getOrCreateClientUuid(): string {
   return uuid;
 }
 
-// Componente de pregunta con escala de botones
 function PreguntaEscala({ titulo, valor, setValor, opciones }: PreguntaEscalaProps) {
   return (
     <div style={{ marginBottom: "32px" }}>
@@ -114,7 +111,6 @@ function PreguntaEscala({ titulo, valor, setValor, opciones }: PreguntaEscalaPro
   );
 }
 
-// Componente de pregunta Sí / No
 function PreguntaSiNo({ titulo, valor, setValor }: PreguntaSiNoProps) {
   return (
     <div style={{ marginBottom: "32px" }}>
@@ -146,7 +142,6 @@ function PreguntaSiNo({ titulo, valor, setValor }: PreguntaSiNoProps) {
   );
 }
 
-// Separador de sección
 function Seccion({ titulo }: { titulo: string }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "12px", margin: "30px 0 20px" }}>
@@ -176,14 +171,11 @@ export default function EncuestaPage() {
   const [edad, setEdad] = useState("");
   const [aviso, setAviso] = useState("");
 
-  // ── Estados movidos arriba para evitar temporal dead zone en useEffect ──
   const [clientUuid, setClientUuid] = useState("");
   const [enviado, setEnviado] = useState<"idle" | "ok" | "offline" | "error">("idle");
   const [comentario, setComentario] = useState("");
-  // Guarda el payload en memoria para reintentarlo cuando vuelva la conexión
   const [pendingPayload, setPendingPayload] = useState<Record<string, unknown> | null>(null);
 
-  // ── useEffect 1: UUID + sync inicial ────────────────────────────────────
   useEffect(() => {
     setClientUuid(getOrCreateClientUuid());
 
@@ -196,10 +188,9 @@ export default function EncuestaPage() {
       };
       window.addEventListener("online", handleOnline);
       return () => window.removeEventListener("online", handleOnline);
-    }).catch(() => {/* falla silenciosamente si el módulo no está disponible */});
+    }).catch(() => {});
   }, []);
 
-  // ── useEffect 2: reintento directo cuando vuelve la conexión ────────────
   useEffect(() => {
     if (enviado === "ok" || enviado === "idle" || !pendingPayload) return;
 
@@ -214,7 +205,7 @@ export default function EncuestaPage() {
           setPendingPayload(null);
           setEnviado("ok");
         }
-      } catch { /* ignorar, se reintentará en el próximo evento online */ }
+      } catch {}
     };
 
     window.addEventListener("online", intentarReenvio);
@@ -394,10 +385,10 @@ export default function EncuestaPage() {
             <h3 style={{ marginBottom: "14px", color: "#555", fontSize: "13px", letterSpacing: "1px" }}>SEXO</h3>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px", marginBottom: "36px" }}>
               {[
-                { label: "Femenino",  },
-                { label: "Masculino",   },
-                { label: "Prefiero no especificar", },
-              ].map(({ label, }) => (
+                { label: "Femenino" },
+                { label: "Masculino" },
+                { label: "Prefiero no especificar" },
+              ].map(({ label }) => (
                 <button key={label} onClick={() => setSexo(label)} style={{
                   padding: "24px 12px",
                   borderRadius: "18px",
@@ -410,7 +401,6 @@ export default function EncuestaPage() {
                   transition: "all 0.15s ease",
                   lineHeight: "1.4",
                 }}>
-                  <span style={{ fontSize: "20px", display: "block", marginBottom: "6px" }}>{}</span>
                   {label}
                 </button>
               ))}
@@ -577,26 +567,19 @@ export default function EncuestaPage() {
                   client_uuid: clientUuid,
                   sexo,
                   rango_etario: edad,
-
                   alternativa_carnica: consumiriaAlternativa === "Sí" ? 1 : 0,
                   reemplazo_aderezo: consumiriaDip === "Sí" ? 1 : 0,
-
                   color_atractivo: colorNuggets,
                   apariencia_general: aparienciaGeneral,
                   dip_aspecto: aspectoDip,
-
                   aroma: aromaAgradable,
-
                   textura_nuggets: texturaNuggets,
                   consistencia_interna: consistenciaInterna,
                   cremosidad_dip: cremosidadDip,
-
                   sabor_nuggets: saborNuggets,
                   combinacion_sabores: combinacionDip,
                   intensidad_sabor: intensidadSabor,
-
                   satisfaccion_general: gustoGeneral,
-
                   consumiria_nuevamente: consumiriaNuevamente === "Sí" ? 1 : 0,
                   recomendaria: recomendaria === "Sí" ? 1 : 0,
                   comentarios: comentario,
@@ -608,26 +591,26 @@ export default function EncuestaPage() {
                     .upsert(payload, { onConflict: "client_uuid" });
 
                   if (error) {
-                   if (error) {
                     console.error("SUPABASE ERROR:", error);
-                    try { 
+                    try {
                       const { encolarVoto } = await import("@/lib/voteQueue");
                       await encolarVoto(payload);
-                    } catch { /* ignorar si no disponible */ }
+                    } catch {}
                     setPendingPayload(payload);
                     setEnviando(false);
                     setEnviado("error");
                     return;
                   }
-                    setPendingPayload(null);  // ← agregar esta línea
-                     setEnviando(false);
-                    setEnviado("ok");
+
+                  setPendingPayload(null);
+                  setEnviando(false);
+                  setEnviado("ok");
                 } else {
                   try {
                     const { encolarVoto } = await import("@/lib/voteQueue");
                     await encolarVoto(payload);
                     console.log("[encuesta] Sin internet. Voto guardado en cola offline.");
-                  } catch { /* ignorar si no disponible */ }
+                  } catch {}
                   setPendingPayload(payload);
                   setEnviando(false);
                   setEnviado("offline");
