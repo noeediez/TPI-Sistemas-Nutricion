@@ -41,7 +41,7 @@ export default function Home() {
           </span>
 
           <h1 className="hero-titulo" style={{ marginTop: "16px" }}>
-            Nuggets Veggie
+            Nuggets Vegetarianos
             <br />
             <span className="hero-subtitulo">+ Dip de Palta</span>
           </h1>
