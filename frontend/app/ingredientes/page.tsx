@@ -1,17 +1,29 @@
 import Link from "next/link";
 
 const nuggets = [
-  { emoji: "🥬", nombre: "Espinaca" },
-  { emoji: "🫘", nombre: "Garbanzos" },
-  { emoji: "🌾", nombre: "Avena" },
-  { emoji: "🌿", nombre: "Condimentos naturales" },
+  "Soja texturizada",
+  "Garbanzos cocidos",
+  "Cebolla",
+  "Morrón rojo",
+  "Ajo",
+  "Provenzal",
+  "Pimentón ahumado",
+  "Sal",
+  "Huevos",
+  "Pan rallado",
+  "Avena",
+  "Copos de maíz sin azúcar",
+  "Aceite en aerosol",
+  "Aceite de oliva",
 ];
 
 const dip = [
-  { emoji: "🥑", nombre: "Palta" },
-  { emoji: "🍋", nombre: "Limón" },
-  { emoji: "🧂", nombre: "Sal" },
-  { emoji: "✨", nombre: "Especias" },
+  "Huevos cocidos",
+  "Palta",
+  "Limón",
+  "Perejil",
+  "Sal",
+  "Aceite de oliva",
 ];
 
 export default function IngredientesPage() {
@@ -38,7 +50,7 @@ export default function IngredientesPage() {
             letterSpacing: "1px",
           }}
         >
-          🌿 100% VEGETAL
+          100% VEGETAL
         </span>
         <h1
           className="ingredientes-titulo"
@@ -76,48 +88,28 @@ export default function IngredientesPage() {
             border: "1px solid #EAF0E2",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "28px" }}>
-            <div
-              style={{
-                width: "48px",
-                height: "48px",
-                background: "#EAF0E2",
-                borderRadius: "14px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "24px",
-              }}
-            >
-              🍃
-            </div>
-            <div>
-              <h2 style={{ margin: 0, color: "#2E5E2C", fontSize: "22px", fontWeight: "800" }}>
-                Nuggets Veggie
-              </h2>
-              <p style={{ margin: 0, color: "#AAA", fontSize: "13px" }}>
-                {nuggets.length} ingredientes
-              </p>
-            </div>
+          <div style={{ marginBottom: "28px" }}>
+            <h2 style={{ margin: 0, color: "#2E5E2C", fontSize: "22px", fontWeight: "800" }}>
+              Nuggets Vegetales
+            </h2>
+            <p style={{ margin: 0, color: "#AAA", fontSize: "13px" }}>
+              {nuggets.length} ingredientes
+            </p>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            {nuggets.map((ing) => (
+            {nuggets.map((nombre) => (
               <div
-                key={ing.nombre}
+                key={nombre}
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "14px",
                   padding: "14px 18px",
                   background: "#F8FAF5",
                   borderRadius: "14px",
                   border: "1px solid #E8F0DF",
                 }}
               >
-                <span style={{ fontSize: "22px" }}>{ing.emoji}</span>
                 <span style={{ color: "#333", fontWeight: "600", fontSize: "15px" }}>
-                  {ing.nombre}
+                  {nombre}
                 </span>
               </div>
             ))}
@@ -134,48 +126,28 @@ export default function IngredientesPage() {
             border: "1px solid #EAF0E2",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "28px" }}>
-            <div
-              style={{
-                width: "48px",
-                height: "48px",
-                background: "#EAF0E2",
-                borderRadius: "14px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "24px",
-              }}
-            >
-              🥑
-            </div>
-            <div>
-              <h2 style={{ margin: 0, color: "#2E5E2C", fontSize: "22px", fontWeight: "800" }}>
-                Dip de Palta
-              </h2>
-              <p style={{ margin: 0, color: "#AAA", fontSize: "13px" }}>
-                {dip.length} ingredientes
-              </p>
-            </div>
+          <div style={{ marginBottom: "28px" }}>
+            <h2 style={{ margin: 0, color: "#2E5E2C", fontSize: "22px", fontWeight: "800" }}>
+              Dip de Palta
+            </h2>
+            <p style={{ margin: 0, color: "#AAA", fontSize: "13px" }}>
+              {dip.length} ingredientes
+            </p>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-            {dip.map((ing) => (
+            {dip.map((nombre) => (
               <div
-                key={ing.nombre}
+                key={nombre}
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "14px",
                   padding: "14px 18px",
                   background: "#F8FAF5",
                   borderRadius: "14px",
                   border: "1px solid #E8F0DF",
                 }}
               >
-                <span style={{ fontSize: "22px" }}>{ing.emoji}</span>
                 <span style={{ color: "#333", fontWeight: "600", fontSize: "15px" }}>
-                  {ing.nombre}
+                  {nombre}
                 </span>
               </div>
             ))}
@@ -225,7 +197,7 @@ export default function IngredientesPage() {
               boxShadow: "0 4px 12px rgba(118,149,94,0.3)",
             }}
           >
-              Ir a la encuesta →
+            Ir a la encuesta →
           </button>
         </Link>
       </div>
