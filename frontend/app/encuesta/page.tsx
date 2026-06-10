@@ -180,6 +180,8 @@ export default function EncuestaPage() {
   const [clientUuid, setClientUuid] = useState("");
   const [enviado, setEnviado] = useState<"idle" | "ok" | "offline" | "error">("idle");
   const [comentario, setComentario] = useState("");
+  // Guarda el payload en memoria para reintentarlo cuando vuelva la conexión
+  const [pendingPayload, setPendingPayload] = useState<Record<string, unknown> | null>(null);
 
   // ── useEffect 1: UUID + sync inicial ────────────────────────────────────
   useEffect(() => {
@@ -197,26 +199,27 @@ export default function EncuestaPage() {
     }).catch(() => {/* falla silenciosamente si el módulo no está disponible */});
   }, []);
 
-  // ── useEffect 2: reintento cuando vuelve la conexión ────────────────────
+  // ── useEffect 2: reintento directo cuando vuelve la conexión ────────────
   useEffect(() => {
-    if (enviado !== "offline" && enviado !== "error") return;
+    if ((enviado !== "offline" && enviado !== "error") || !pendingPayload) return;
 
     const intentarReenvio = async () => {
       if (!navigator.onLine) return;
       try {
-        const { syncPendingVotes } = await import("@/lib/syncWorker");
-        await syncPendingVotes();
-        const { obtenerVotosPendientes } = await import("@/lib/voteQueue");
-        const pendientes = await obtenerVotosPendientes();
-        if (pendientes.length === 0) {
+        const { error } = await supabase
+          .from("respuestas")
+          .upsert(pendingPayload, { onConflict: "client_uuid" });
+
+        if (!error) {
+          setPendingPayload(null);
           setEnviado("ok");
         }
-      } catch { /* ignorar */ }
+      } catch { /* ignorar, se reintentará en el próximo evento online */ }
     };
 
     window.addEventListener("online", intentarReenvio);
     return () => window.removeEventListener("online", intentarReenvio);
-  }, [enviado]);
+  }, [enviado, pendingPayload]);
 
   const [consumiriaAlternativa, setConsumiriaAlternativa] = useState("");
   const [consumiriaDip, setConsumiriaDip] = useState("");
@@ -604,6 +607,7 @@ export default function EncuestaPage() {
                       const { encolarVoto } = await import("@/lib/voteQueue");
                       await encolarVoto(payload);
                     } catch { /* ignorar si no disponible */ }
+                    setPendingPayload(payload);
                     setEnviando(false);
                     setEnviado("error");
                     return;
@@ -617,6 +621,7 @@ export default function EncuestaPage() {
                     await encolarVoto(payload);
                     console.log("[encuesta] Sin internet. Voto guardado en cola offline.");
                   } catch { /* ignorar si no disponible */ }
+                  setPendingPayload(payload);
                   setEnviando(false);
                   setEnviado("offline");
                 }
