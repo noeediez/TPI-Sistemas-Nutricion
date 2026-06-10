@@ -219,7 +219,7 @@ export default function EncuestaPage() {
   const [recomendaria, setRecomendaria] = useState("");
 
   const [comentario, setComentario] = useState("");
-  const [enviado, setEnviado] = useState(false);
+  const [enviado, setEnviado] = useState<"idle" | "ok" | "offline" | "error">("idle");
 
   const totalPasos = 5;
 
@@ -272,19 +272,32 @@ export default function EncuestaPage() {
     </div>
   );
 
-  if (enviado) {
+  if (enviado !== "idle") {
+    const esExitoso = enviado === "ok";
+    const esOffline = enviado === "offline";
+
+    const icono = esExitoso ? "🥑" : "📶";
+    const titulo = esExitoso ? "¡Muchas gracias!" : "Encuesta guardada";
+    const subtitulo = esExitoso
+      ? "Tu opinión es muy importante para nosotros. Las respuestas fueron registradas correctamente."
+      : esOffline
+        ? "No tenés conexión a internet. Tus respuestas quedaron guardadas en tu dispositivo y se enviarán automáticamente cuando recuperes la conexión."
+        : "Hubo un problema al conectar con el servidor. Tus respuestas quedaron guardadas en tu dispositivo y se enviarán automáticamente cuando haya conexión.";
+    const colorTitulo = esExitoso ? "#76955E" : "#B07D2B";
+    const colorSubtitulo = esExitoso ? "#777" : "#8A6020";
+
     return (
       <main className="encuesta-main" style={{ minHeight: "100vh", background: "#F8F6EF", display: "flex", justifyContent: "center", alignItems: "center" }}>
         <div className="encuesta-card" style={{ width: "100%", maxWidth: "950px", background: "white", borderRadius: "30px", boxShadow: "0 10px 30px rgba(0,0,0,0.08)", textAlign: "center" }}>
-          <div style={{ fontSize: "64px", marginBottom: "24px" }}>🥑</div>
-          <h1 style={{ color: "#76955E", marginBottom: "14px" }}>¡Muchas gracias!</h1>
-          <p style={{ color: "#777", fontSize: "16px", maxWidth: "420px", margin: "0 auto 32px" }}>
-            Tu opinión es muy importante para nosotros. Las respuestas fueron registradas correctamente.
+          <div style={{ fontSize: "64px", marginBottom: "24px" }}>{icono}</div>
+          <h1 style={{ color: colorTitulo, marginBottom: "14px" }}>{titulo}</h1>
+          <p style={{ color: colorSubtitulo, fontSize: "16px", maxWidth: "420px", margin: "0 auto 32px" }}>
+            {subtitulo}
           </p>
           <button
             onClick={() => router.push("/")}
             style={{
-              background: "#76955E",
+              background: esExitoso ? "#76955E" : "#B07D2B",
               color: "white",
               border: "none",
               padding: "14px 36px",
@@ -292,7 +305,7 @@ export default function EncuestaPage() {
               fontWeight: "700",
               fontSize: "15px",
               cursor: "pointer",
-              boxShadow: "0 4px 12px rgba(118,149,94,0.3)",
+              boxShadow: esExitoso ? "0 4px 12px rgba(118,149,94,0.3)" : "0 4px 12px rgba(176,125,43,0.3)",
             }}
           >
             ← Volver al inicio
@@ -573,11 +586,17 @@ export default function EncuestaPage() {
                     console.error("SUPABASE ERROR:", error);
                     // Fallback: guardar en cola (import dinámico)
                     try {
-                      const { encolarVoto  } = await import("@/lib/voteQueue");
+                      const { encolarVoto } = await import("@/lib/voteQueue");
                       await encolarVoto(payload);
                     } catch { /* ignorar si no disponible */ }
-                    alert("Hubo un problema al enviar. Tu respuesta fue guardada y se enviará cuando haya conexión.");
+                    setEnviando(false);
+                    setEnviado("error");
+                    return;
                   }
+
+                  // Éxito real
+                  setEnviando(false);
+                  setEnviado("ok");
                 } else {
                   // Sin internet: guardar en IndexedDB (import dinámico)
                   try {
@@ -585,10 +604,9 @@ export default function EncuestaPage() {
                     await encolarVoto(payload);
                     console.log("[encuesta] Sin internet. Voto guardado en cola offline.");
                   } catch { /* ignorar si no disponible */ }
+                  setEnviando(false);
+                  setEnviado("offline");
                 }
-
-                setEnviando(false);
-                setEnviado(true);
               }}
             />
           </>
