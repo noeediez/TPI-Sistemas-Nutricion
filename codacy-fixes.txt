@@ -1,0 +1,114 @@
+diff --git a/backend/src/Interfaces/IRespuestaRepository.ts b/backend/src/Interfaces/IRespuestaRepository.ts
+--- a/backend/src/Interfaces/IRespuestaRepository.ts
++++ b/backend/src/Interfaces/IRespuestaRepository.ts
+@@ -5,1 +5,1 @@
+-    listarTodas(): Promise<any[]>;
++    listarTodas(): Promise<unknown[]>;
+diff --git a/backend/src/REPOSITORY/RespuestaRepository.ts b/backend/src/REPOSITORY/RespuestaRepository.ts
+--- a/backend/src/REPOSITORY/RespuestaRepository.ts
++++ b/backend/src/REPOSITORY/RespuestaRepository.ts
+@@ -17,1 +17,1 @@
+-    public async listarTodas(): Promise<any[]> {
++    public async listarTodas(): Promise<unknown[]> {
+@@ -74,1 +74,1 @@
+-                suma = suma + Number((datos[j] as any)[campo]);
++                suma = suma + Number((datos[j] as unknown)[campo]);
+diff --git a/frontend/app/api/respuestas/route.ts b/frontend/app/api/respuestas/route.ts
+--- a/frontend/app/api/respuestas/route.ts
++++ b/frontend/app/api/respuestas/route.ts
+@@ -7,1 +7,1 @@
+-    let body: any;
++    let body: unknown;
+@@ -37,1 +37,1 @@
+-    } catch (error: any) {
++    } catch (error: unknown) {
+diff --git a/frontend/app/api/admin/stats/route.ts b/frontend/app/api/admin/stats/route.ts
+--- a/frontend/app/api/admin/stats/route.ts
++++ b/frontend/app/api/admin/stats/route.ts
+@@ -9,1 +9,1 @@
+-    } catch (error: any) {
++    } catch (error: unknown) {
+diff --git a/frontend/app/admin/page.tsx b/frontend/app/admin/page.tsx
+--- a/frontend/app/admin/page.tsx
++++ b/frontend/app/admin/page.tsx
+@@ -469,1 +469,1 @@
+-    r.sexo?.toLowerCase().includes(search.toLowerCase())
++    r.sexo.toLowerCase().includes(search.toLowerCase())
+@@ -500,1 +500,1 @@
+-          onChange={(e) => setSearch(e.target.value)}
++          onChange={(e) => { setSearch(e.target.value); }}
+@@ -801,1 +801,1 @@
+-                onClick={() => cargarConversacion(conv)}
++                onClick={() => { cargarConversacion(conv); }}
+@@ -840,1 +840,1 @@
+-                      onClick={() => setInput(s)}
++                      onClick={() => { setInput(s); }}
+@@ -896,1 +896,1 @@
+-                onClick={() => setModalMailAbierto(true)}
++                onClick={() => { setModalMailAbierto(true); }}
+@@ -909,1 +909,1 @@
+-              onChange={e => setInput(e.target.value)}
++              onChange={e => { setInput(e.target.value); }}
+@@ -910,1 +910,1 @@
+-              onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); enviar(); } }}
++              onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); void enviar(); } }}
+@@ -938,1 +938,1 @@
+-                <div key={c.email} onClick={() => toggleSeleccionado(c.email)}
++                <div key={c.email} onClick={() => { toggleSeleccionado(c.email); }}
+@@ -953,1 +953,1 @@
+-                <input value={nuevoNombre} onChange={e => setNuevoNombre(e.target.value)} placeholder="Nombre" style={{ flex: 1, border: "1px solid #DDD", borderRadius: "8px", padding: "8px 10px", fontSize: "12px", outline: "none" }} />
++                <input value={nuevoNombre} onChange={e => { setNuevoNombre(e.target.value); }} placeholder="Nombre" style={{ flex: 1, border: "1px solid #DDD", borderRadius: "8px", padding: "8px 10px", fontSize: "12px", outline: "none" }} />
+@@ -954,1 +954,1 @@
+-                <input value={nuevoEmail} onChange={e => setNuevoEmail(e.target.value)} placeholder="Email" style={{ flex: 2, border: "1px solid #DDD", borderRadius: "8px", padding: "8px 10px", fontSize: "12px", outline: "none" }} />
++                <input value={nuevoEmail} onChange={e => { setNuevoEmail(e.target.value); }} placeholder="Email" style={{ flex: 2, border: "1px solid #DDD", borderRadius: "8px", padding: "8px 10px", fontSize: "12px", outline: "none" }} />
+@@ -1007,1 +1007,1 @@
+-          setTimeout(() => setNuevaRespuesta(false), 3000);
++          setTimeout(() => { setNuevaRespuesta(false); }, 3000);
+@@ -1051,1 +1051,1 @@
+-        <div className="admin-overlay" onClick={() => setSidebarAbierto(false)} />
++        <div className="admin-overlay" onClick={() => { setSidebarAbierto(false); }} />
+@@ -1068,1 +1068,1 @@
+-          <div key={n.id} style={S.navItem(page === n.id)} onClick={() => setPage(n.id)}>
++          <div key={n.id} style={S.navItem(page === n.id)} onClick={() => { setPage(n.id); }}>
+@@ -1076,1 +1076,1 @@
+-            onClick={() => router.push("/")}
++            onClick={() => { router.push("/"); }}
+@@ -1086,1 +1086,1 @@
+-        <button className="admin-hamburger" onClick={() => setSidebarAbierto(true)}>
++        <button className="admin-hamburger" onClick={() => { setSidebarAbierto(true); }}>
+diff --git a/frontend/app/api/admin/chat/route.ts b/frontend/app/api/admin/chat/route.ts
+--- a/frontend/app/api/admin/chat/route.ts
++++ b/frontend/app/api/admin/chat/route.ts
+@@ -6,1 +6,1 @@
+-    let body: any;
++    let body: unknown;
+@@ -22,1 +22,1 @@
+-    } catch (error: any) {
++    } catch (error: unknown) {
+diff --git a/frontend/app/admin/login/page.tsx b/frontend/app/admin/login/page.tsx
+--- a/frontend/app/admin/login/page.tsx
++++ b/frontend/app/admin/login/page.tsx
+@@ -131,1 +131,1 @@
+-                onChange={(e) => setUsuario(e.target.value)}
++                onChange={(e) => { setUsuario(e.target.value); }}
+@@ -180,1 +180,1 @@
+-                onChange={(e) => setContrasena(e.target.value)}
++                onChange={(e) => { setContrasena(e.target.value); }}
+diff --git a/frontend/app/api/admin/mail/route.ts b/frontend/app/api/admin/mail/route.ts
+--- a/frontend/app/api/admin/mail/route.ts
++++ b/frontend/app/api/admin/mail/route.ts
+@@ -7,1 +7,1 @@
+-  let body: any;
++  let body: unknown;
+@@ -28,1 +28,1 @@
+-  } catch (error: any) {
++  } catch (error: unknown) {
+diff --git a/backend/src/FACADE/ChatFacade.ts b/backend/src/FACADE/ChatFacade.ts
+--- a/backend/src/FACADE/ChatFacade.ts
++++ b/backend/src/FACADE/ChatFacade.ts
+@@ -5,1 +5,1 @@
+-    private clienteIA: any;
++    private clienteIA: unknown;
+@@ -7,1 +7,1 @@
+-    constructor(clienteIA: any) {
++    constructor(clienteIA: unknown) {
