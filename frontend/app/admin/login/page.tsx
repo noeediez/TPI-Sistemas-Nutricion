@@ -128,7 +128,7 @@ export default function AdminLoginPage() {
               <input
                 type="text"
                 value={usuario}
-                onChange={(e) => setUsuario(e.target.value)}
+                onChange={(e) => { setUsuario(e.target.value); }}
                 placeholder="Ingresá tu usuario"
                 required
                 style={{
@@ -177,7 +177,7 @@ export default function AdminLoginPage() {
               <input
                 type="password"
                 value={contrasena}
-                onChange={(e) => setContrasena(e.target.value)}
+                onChange={(e) => { setContrasena(e.target.value); }}
                 placeholder="Ingresá tu contraseña"
                 required
                 style={{
