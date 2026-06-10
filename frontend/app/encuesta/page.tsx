@@ -392,20 +392,26 @@ export default function EncuestaPage() {
             <p style={{ color: "#777", marginBottom: "30px" }}>Nos gustaría conocer un poco sobre ti para analizar mejor los resultados.</p>
 
             <h3 style={{ marginBottom: "14px", color: "#555", fontSize: "13px", letterSpacing: "1px" }}>SEXO</h3>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "36px" }}>
-              {["Femenino", "Masculino"].map((opcion) => (
-                <button key={opcion} onClick={() => setSexo(opcion)} style={{
-                  padding: "28px 20px",
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px", marginBottom: "36px" }}>
+              {[
+                { label: "Femenino",  },
+                { label: "Masculino",   },
+                { label: "Prefiero no especificar", },
+              ].map(({ label, }) => (
+                <button key={label} onClick={() => setSexo(label)} style={{
+                  padding: "24px 12px",
                   borderRadius: "18px",
-                  border: sexo === opcion ? "3px solid #E7B511" : "2px solid #E0E0E0",
-                  background: sexo === opcion ? "#FFF9E8" : "white",
+                  border: sexo === label ? "3px solid #E7B511" : "2px solid #E0E0E0",
+                  background: sexo === label ? "#FFF9E8" : "white",
                   cursor: "pointer",
-                  fontSize: "17px",
+                  fontSize: label === "Prefiero no especificar" ? "13px" : "17px",
                   fontWeight: "600",
                   color: "#444",
                   transition: "all 0.15s ease",
+                  lineHeight: "1.4",
                 }}>
-                  {opcion === "Femenino" ? "" : ""}<br />{opcion}
+                  <span style={{ fontSize: "20px", display: "block", marginBottom: "6px" }}>{}</span>
+                  {label}
                 </button>
               ))}
             </div>
