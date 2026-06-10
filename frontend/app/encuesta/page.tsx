@@ -29,7 +29,7 @@ interface NavegacionProps {
   esUltimo?: boolean;
 }
 
-// Escalas reutilizables 
+// Escalas reutilizables
 const ESCALA_ATRACTIVO: OpcionEscala[] = [
   { valor: 5, etiqueta: "Muy atractivo" },
   { valor: 4, etiqueta: "Atractivo" },
@@ -81,7 +81,7 @@ function getOrCreateClientUuid(): string {
   return uuid;
 }
 
-//  Componente de pregunta con escala de botones 
+// Componente de pregunta con escala de botones
 function PreguntaEscala({ titulo, valor, setValor, opciones }: PreguntaEscalaProps) {
   return (
     <div style={{ marginBottom: "32px" }}>
@@ -114,7 +114,7 @@ function PreguntaEscala({ titulo, valor, setValor, opciones }: PreguntaEscalaPro
   );
 }
 
-// Componente de pregunta Sí / No 
+// Componente de pregunta Sí / No
 function PreguntaSiNo({ titulo, valor, setValor }: PreguntaSiNoProps) {
   return (
     <div style={{ marginBottom: "32px" }}>
@@ -146,7 +146,7 @@ function PreguntaSiNo({ titulo, valor, setValor }: PreguntaSiNoProps) {
   );
 }
 
-// ── Separador de sección ──────────────────────────────
+// Separador de sección
 function Seccion({ titulo }: { titulo: string }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "12px", margin: "30px 0 20px" }}>
@@ -176,16 +176,16 @@ export default function EncuestaPage() {
   const [edad, setEdad] = useState("");
   const [aviso, setAviso] = useState("");
 
-  // ── TAREA 4: UUID del cliente (anti-duplicados) ──────────────────────────
+  // ── Estados movidos arriba para evitar temporal dead zone en useEffect ──
   const [clientUuid, setClientUuid] = useState("");
+  const [enviado, setEnviado] = useState<"idle" | "ok" | "offline" | "error">("idle");
+  const [comentario, setComentario] = useState("");
 
+  // ── useEffect 1: UUID + sync inicial ────────────────────────────────────
   useEffect(() => {
-    // Obtiene/crea el UUID una vez que estamos en el cliente
     setClientUuid(getOrCreateClientUuid());
 
-    // ── TAREA 3: Import dinámico para evitar errores SSR ─────────────────
     import("@/lib/syncWorker").then(({ syncPendingVotes }) => {
-      // Intento inicial por si ya hay votos pendientes del pasado
       syncPendingVotes();
 
       const handleOnline = () => {
@@ -197,7 +197,7 @@ export default function EncuestaPage() {
     }).catch(() => {/* falla silenciosamente si el módulo no está disponible */});
   }, []);
 
-  // Reintento automático cuando vuelve la conexión y hay una respuesta pendiente
+  // ── useEffect 2: reintento cuando vuelve la conexión ────────────────────
   useEffect(() => {
     if (enviado !== "offline" && enviado !== "error") return;
 
@@ -206,7 +206,6 @@ export default function EncuestaPage() {
       try {
         const { syncPendingVotes } = await import("@/lib/syncWorker");
         await syncPendingVotes();
-        // Si la cola quedó vacía, el voto se envió exitosamente
         const { obtenerVotosPendientes } = await import("@/lib/voteQueue");
         const pendientes = await obtenerVotosPendientes();
         if (pendientes.length === 0) {
@@ -239,9 +238,6 @@ export default function EncuestaPage() {
   const [gustoGeneral, setGustoGeneral] = useState(0);
   const [consumiriaNuevamente, setConsumiriaNuevamente] = useState("");
   const [recomendaria, setRecomendaria] = useState("");
-
-  const [comentario, setComentario] = useState("");
-  const [enviado, setEnviado] = useState<"idle" | "ok" | "offline" | "error">("idle");
 
   const totalPasos = 5;
 
@@ -290,7 +286,8 @@ export default function EncuestaPage() {
           boxShadow: "0 4px 12px rgba(231,181,17,0.35)",
         }}
       >
-      {enviando ? "Enviando..." : esUltimo ? "Enviar encuesta ✓" : "Siguiente →"}      </button>
+        {enviando ? "Enviando..." : esUltimo ? "Enviar encuesta ✓" : "Siguiente →"}
+      </button>
     </div>
   );
 
@@ -567,7 +564,6 @@ export default function EncuestaPage() {
 
                 setEnviando(true);
 
-                // ── TAREA 4: payload con client_uuid ──────────────────────
                 const payload = {
                   client_uuid: clientUuid,
                   sexo,
@@ -597,8 +593,6 @@ export default function EncuestaPage() {
                   comentarios: comentario,
                 };
 
-                // ── TAREA 3: Si hay internet → upsert directo
-                //              Si no hay → guardar en cola offline ──────────
                 if (navigator.onLine) {
                   const { error } = await supabase
                     .from("respuestas")
@@ -606,7 +600,6 @@ export default function EncuestaPage() {
 
                   if (error) {
                     console.error("SUPABASE ERROR:", error);
-                    // Fallback: guardar en cola (import dinámico)
                     try {
                       const { encolarVoto } = await import("@/lib/voteQueue");
                       await encolarVoto(payload);
@@ -616,11 +609,9 @@ export default function EncuestaPage() {
                     return;
                   }
 
-                  // Éxito real
                   setEnviando(false);
                   setEnviado("ok");
                 } else {
-                  // Sin internet: guardar en IndexedDB (import dinámico)
                   try {
                     const { encolarVoto } = await import("@/lib/voteQueue");
                     await encolarVoto(payload);
