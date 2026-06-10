@@ -837,7 +837,7 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
                     <button
                       key={s}
                       className="chat-chip"
-                      onClick={() => setInput(s)}
+                      onClick={() => { setInput(s); }}
                       style={{ background: "white", border: "1px solid #E0E0E0", borderRadius: "20px", padding: "8px 14px", fontSize: "12px", color: "#555", cursor: "pointer", transition: "all 0.15s" }}
                     >
                       {s}
@@ -893,7 +893,7 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
                 📄 Descargar informe
               </button>
               <button
-                onClick={() => setModalMailAbierto(true)}
+                onClick={() => { setModalMailAbierto(true); }}
                 style={{ background: "#76955E", border: "none", color: "white", borderRadius: "20px", fontSize: "12px", padding: "6px 14px", cursor: "pointer" }}
               >
                 📧 Enviar por mail
@@ -1048,7 +1048,7 @@ export default function AdminPanel() {
   return (
     <div className="admin-layout">
       {sidebarAbierto && (
-        <div className="admin-overlay" onClick={() => setSidebarAbierto(false)} />
+        <div className="admin-overlay" onClick={() => { setSidebarAbierto(false); }}/>
       )}
 
       {nuevaRespuesta && (
@@ -1065,7 +1065,7 @@ export default function AdminPanel() {
         </div>
 
         {navItems.map((n) => (
-          <div key={n.id} style={S.navItem(page === n.id)} onClick={() => setPage(n.id)}>
+          <div key={n.id} style={S.navItem(page === n.id)} onClick={() => { setPage(n.id); }}>
             <span>{n.emoji}</span>
             <span>{n.label}</span>
           </div>
@@ -1073,7 +1073,7 @@ export default function AdminPanel() {
 
         <div style={{ marginTop: "auto", padding: "16px 18px 0", borderTop: "1px solid #EEE" }}>
           <button
-            onClick={() => router.push("/")}
+            onClick={() => { router.push("/"); }}
             style={{ background: "none", border: "none", color: "#bbb", fontSize: "12px", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", gap: "6px" }}
           >
             ← Menú principal
@@ -1083,7 +1083,7 @@ export default function AdminPanel() {
 
       {/* Main */}
       <main className="admin-main-content">
-        <button className="admin-hamburger" onClick={() => setSidebarAbierto(true)}>
+        <button className="admin-hamburger" onClick={() => { setSidebarAbierto(true); }}>
           ☰ Menú
         </button>
         <div style={S.topBar}>

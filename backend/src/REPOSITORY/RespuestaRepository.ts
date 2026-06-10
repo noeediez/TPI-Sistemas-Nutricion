@@ -129,7 +129,7 @@ export class RespuestaRepository implements IRespuestaRepository {
         while (i < resultado.data.length) {
             const sexo = resultado.data[i].sexo;
             if (conteo[sexo] === undefined) {
-                conteo[sexo] = 0;
+                conteo[sexo as string] = 0;
             }
             conteo[sexo] = conteo[sexo] + 1;
             i = i + 1;
@@ -139,7 +139,7 @@ export class RespuestaRepository implements IRespuestaRepository {
         const claves = Object.keys(conteo);
         let j = 0;
         while (j < claves.length) {
-            distribucion.push({ sexo: claves[j], cantidad: conteo[claves[j]] });
+            distribucion.push({ sexo: claves[j], cantidad: conteo[claves[j] as string] });
             j = j + 1;
         }
 
