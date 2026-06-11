@@ -799,7 +799,7 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
       <div style={{ display: "flex", flex: 1, background: "white", borderRadius: "16px", border: "1px solid #EEE", overflow: "hidden", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", minHeight: 0 }}>
 
         {/* Panel izquierdo — historial */}
-        <div style={{ width: "220px", flexShrink: 0, borderRight: "1px solid #EEE", overflowY: "auto", display: "flex", flexDirection: "column" }}>
+        <div className="chat-historial-panel" style={{ width: "220px", flexShrink: 0, borderRight: "1px solid #EEE", overflowY: "auto", display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: "11px", fontWeight: "700", color: "#888", letterSpacing: "1px", textTransform: "uppercase", padding: "12px 16px", borderBottom: "1px solid #F5F5F5", flexShrink: 0 }}>
             Conversaciones
           </div>
