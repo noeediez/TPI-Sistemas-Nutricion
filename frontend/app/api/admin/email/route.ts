@@ -5,7 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: NextRequest) {
   let body: any;
-  try { body = await request.json(); } 
+  try { body = await request.json(); }
   catch { return NextResponse.json({ error: "JSON invalido" }, { status: 400 }); }
 
   const { destinatarios, asunto, html } = body;

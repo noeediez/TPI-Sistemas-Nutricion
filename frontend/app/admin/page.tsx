@@ -551,11 +551,8 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
   const [escribiendo, setEscribiendo] = useState(false);
 
   const [modalMailAbierto, setModalMailAbierto] = useState(false);
-  const [contactos, setContactos] = useState<{nombre: string, email: string}[]>(() => {
-    if (typeof window === "undefined") return [];
-    const saved = localStorage.getItem("admin_contactos");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [contactos, setContactos] = useState<{id?: string, nombre: string, email: string}[]>([]);
+
   const [seleccionados, setSeleccionados] = useState<string[]>([]);
   const [nuevoNombre, setNuevoNombre] = useState("");
   const [nuevoEmail, setNuevoEmail] = useState("");
@@ -564,13 +561,24 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
     new Date().toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" });
 
   useEffect(() => {
-    const saved = localStorage.getItem("admin_chat_historial");
-    if (saved) setHistorial(JSON.parse(saved));
+    supabase.from("chat_contactos").select("*").order("created_at").then(({ data }) => {
+      if (data) setContactos(data);
+    });
+    supabase.from("chat_historial").select("*").order("created_at", { ascending: false }).then(({ data }) => {
+      if (data) setHistorial(data as Conversacion[]);
+    });
   }, []);
 
-  function guardarHistorial(nuevo: Conversacion[]) {
-    setHistorial(nuevo);
-    localStorage.setItem("admin_chat_historial", JSON.stringify(nuevo));
+  async function guardarHistorial(conv: Conversacion, esNueva: boolean) {
+    if (esNueva) {
+      const { data } = await supabase.from("chat_historial")
+        .insert({ id: conv.id, titulo: conv.titulo, fecha: conv.fecha, mensajes: conv.mensajes })
+        .select().single();
+      if (data) setHistorial(prev => [data as Conversacion, ...prev]);
+    } else {
+      await supabase.from("chat_historial").update({ mensajes: conv.mensajes }).eq("id", conv.id);
+      setHistorial(prev => prev.map(c => c.id === conv.id ? conv : c));
+    }
   }
 
   function scrollAbajo() {
@@ -594,7 +602,10 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
       const res  = await fetch("/api/admin/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mensaje: texto }),
+        body: JSON.stringify({ 
+          mensaje: texto,
+          historial: mensajes.map(m => ({ rol: m.rol, texto: m.texto }))
+        }),
       });
       const data = await res.json();
       const msgIA: Mensaje = {
@@ -606,8 +617,8 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
       setMensajes(conIA);
 
       if (convActiva) {
-        guardarHistorial(historial.map(c => c.id === convActiva ? { ...c, mensajes: conIA } : c));
-      } else {
+          const convActualizada = { ...historial.find(c => c.id === convActiva)!, mensajes: conIA };
+          guardarHistorial(convActualizada, false);      } else {
         const id   = Date.now().toString();
         const conv: Conversacion = {
           id,
@@ -616,7 +627,7 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
           mensajes: conIA,
         };
         setConvActiva(id);
-        guardarHistorial([conv, ...historial]);
+        guardarHistorial(conv, true);
       }
     } catch {
       const msgErr: Mensaje = {
@@ -685,11 +696,12 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
     if (win) { win.document.write(html); win.document.close(); win.print(); }
   }
 
-  function agregarContacto() {
+  async function agregarContacto() {
     if (!nuevoNombre.trim() || !nuevoEmail.trim()) return;
-    const nuevos = [...contactos, { nombre: nuevoNombre.trim(), email: nuevoEmail.trim() }];
-    setContactos(nuevos);
-    localStorage.setItem("admin_contactos", JSON.stringify(nuevos));
+    const { data } = await supabase.from("chat_contactos")
+      .insert({ nombre: nuevoNombre.trim(), email: nuevoEmail.trim() })
+      .select().single();
+    if (data) setContactos(prev => [...prev, data]);
     setNuevoNombre("");
     setNuevoEmail("");
   }
