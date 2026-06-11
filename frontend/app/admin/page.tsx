@@ -654,6 +654,7 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
   function cargarConversacion(conv: Conversacion) {
     setMensajes(conv.mensajes);
     setConvActiva(conv.id);
+    setPanelHistAbierto(false); 
   }
 
   function descargarInforme() {
