@@ -571,10 +571,12 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
 
   async function guardarHistorial(conv: Conversacion, esNueva: boolean) {
     if (esNueva) {
-      const { data } = await supabase.from("chat_historial")
+      const { data, error } = await supabase.from("chat_historial")
         .insert({ id: conv.id, titulo: conv.titulo, fecha: conv.fecha, mensajes: conv.mensajes })
         .select().single();
-      if (data) setHistorial(prev => [data as Conversacion, ...prev]);
+      if (data && !error) {
+        setHistorial(prev => [data as Conversacion, ...prev]);
+      }
     } else {
       await supabase.from("chat_historial").update({ mensajes: conv.mensajes }).eq("id", conv.id);
       setHistorial(prev => prev.map(c => c.id === conv.id ? conv : c));
@@ -619,7 +621,7 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
       if (convActiva) {
           const convActualizada = { ...historial.find(c => c.id === convActiva)!, mensajes: conIA };
           guardarHistorial(convActualizada, false);      } else {
-        const id   = Date.now().toString();
+        const id = crypto.randomUUID();
         const conv: Conversacion = {
           id,
           titulo: texto.slice(0, 40),
