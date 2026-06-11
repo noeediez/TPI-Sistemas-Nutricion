@@ -549,6 +549,7 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
   const [convActiva, setConvActiva]   = useState<string | null>(null);
   const [input, setInput]             = useState("");
   const [escribiendo, setEscribiendo] = useState(false);
+  const [panelHistAbierto, setPanelHistAbierto] = useState(false);
 
   const [modalMailAbierto, setModalMailAbierto] = useState(false);
   const [contactos, setContactos] = useState<{id?: string, nombre: string, email: string}[]>([]);
@@ -779,6 +780,25 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
         .chat-chip:hover { border-color: #76955E !important; color: #76955E !important; }
         .chat-hist-item:hover { background: #F8F6EF !important; }
         .chat-send:hover:not(:disabled) { background: #E7B511 !important; transform: scale(1.05); }
+        @media (max-width: 768px) {
+          .chat-hist-panel {
+            position: absolute;
+            left: -220px;
+            top: 0;
+            height: 100%;
+            z-index: 50;
+            transition: left 0.3s ease;
+          }
+          .chat-hist-panel.abierto {
+            left: 0;
+          }
+          .chat-conv-toggle {
+            display: flex !important;
+            padding: 8px 16px;
+            border-bottom: 1px solid #EEE;
+          }
+        }
+      
       `}</style>
 
       {/* Header */}
@@ -796,10 +816,10 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
       </div>
 
       {/* Contenedor principal */}
-      <div style={{ display: "flex", flex: 1, background: "white", borderRadius: "16px", border: "1px solid #EEE", overflow: "hidden", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", minHeight: 0 }}>
+      <div style={{ display: "flex", flex: 1, background: "white", borderRadius: "16px", border: "1px solid #EEE", overflow: "hidden", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", minHeight: 0, position: "relative" }}>
 
         {/* Panel izquierdo — historial */}
-        <div className="chat-historial-panel" style={{ width: "220px", flexShrink: 0, borderRight: "1px solid #EEE", overflowY: "auto", display: "flex", flexDirection: "column" }}>
+        <div className={`chat-hist-panel${panelHistAbierto ? " abierto" : ""}`} style={{ width: "220px", flexShrink: 0, borderRight: "1px solid #EEE", overflowY: "auto", display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: "11px", fontWeight: "700", color: "#888", letterSpacing: "1px", textTransform: "uppercase", padding: "12px 16px", borderBottom: "1px solid #F5F5F5", flexShrink: 0 }}>
             Conversaciones
           </div>
@@ -833,6 +853,15 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
 
         {/* Panel derecho — área de chat */}
         <div style={{ flex: 1, display: "flex", flexDirection: "column", background: "#F8F6EF", minWidth: 0 }}>
+
+        <div className="chat-conv-toggle" style={{ display: "none", background: "white", borderBottom: "1px solid #EEE", padding: "8px 16px" }}>
+          <button
+            onClick={() => setPanelHistAbierto(v => !v)}
+            style={{ background: "transparent", border: "1px solid #C8D4B0", color: "#76955E", borderRadius: "20px", fontSize: "12px", padding: "6px 14px", cursor: "pointer" }}
+          >
+            💬 Conversaciones
+          </button>
+        </div>
 
           {/* Mensajes */}
           <div style={{ flex: 1, overflowY: "auto", padding: "20px", display: "flex", flexDirection: "column", gap: "16px" }}>
