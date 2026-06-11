@@ -1045,7 +1045,7 @@ export default function AdminPanel() {
       .channel("respuestas-realtime")
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "respuestas" },
+        { event: "*", schema: "public", table: "respuestas" },
         (payload) => {
           setRespuestas((prev) => [payload.new as Respuesta, ...prev]);
           setNuevaRespuesta(true);
