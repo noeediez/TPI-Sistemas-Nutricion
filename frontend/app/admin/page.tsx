@@ -816,7 +816,7 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
       </div>
 
       {/* Contenedor principal */}
-      <div style={{ display: "flex", flex: 1, background: "white", borderRadius: "16px", border: "1px solid #EEE", overflow: "hidden", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", minHeight: 0, position: "relative" }}>
+      <div style={{ display: "flex", flex: 1, background: "white", borderRadius: "16px", border: "1px solid #EEE", overflow: "hidden", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", minHeight: 0 }}>
 
         {/* Panel izquierdo — historial */}
         <div className={`chat-hist-panel${panelHistAbierto ? " abierto" : ""}`} style={{ width: "220px", flexShrink: 0, borderRight: "1px solid #EEE", overflowY: "auto", display: "flex", flexDirection: "column" }}>
