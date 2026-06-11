@@ -11,10 +11,11 @@ export class ChatFacade {
 
     public async responder(mensaje: string, historial: {rol: string, texto: string}[] = []): Promise<string> {
 
-        const [total, promedios, distribucionSexo] = await Promise.all([
+        const [total, promedios, distribucionSexo, comentarios] = await Promise.all([
             this.repository.contarTotal(),
             this.repository.obtenerPromedios(),
             this.repository.distribucionPorSexo(),
+            this.repository.listarComentarios(),
         ]);
 
         const system = `Sos un asistente de análisis sensorial para el proyecto Dip & Crunch.
@@ -25,6 +26,7 @@ Datos actuales:
 - Total de respuestas: ${total}
 - Promedios por atributo: ${JSON.stringify(promedios)}
 - Distribución por sexo: ${JSON.stringify(distribucionSexo)}
+- Comentarios textuales de los evaluadores: ${JSON.stringify(comentarios)}
 Si te preguntan algo que no tiene que ver con la encuesta, redirigí la conversación al análisis sensorial.
         `;
 
