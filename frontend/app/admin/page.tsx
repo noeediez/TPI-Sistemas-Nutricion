@@ -787,6 +787,7 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
             top: 0;
             height: 100%;
             z-index: 50;
+            background: white;
             transition: left 0.3s ease;
           }
           .chat-hist-panel.abierto {
