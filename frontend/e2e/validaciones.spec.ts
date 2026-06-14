@@ -100,13 +100,13 @@ test.describe("Validaciones por paso", () => {
     await page.locator('button:has-text("Muy agradable")').first().click();
     await page.locator('button:has-text("Crocante")').first().click();
     await page.locator('button:has-text("Excelente")').first().click();
-    await page.locator('button:has-text("Muy buena")').first().click();
+    await page.locator('button:has-text("Muy buena")').nth(1).click();
     await page.locator('button:has-text("Siguiente")').click();
  
     // Paso 4
     await expect(page.locator("h1")).toContainText("Sabor", { timeout: 5000 });
     await page.locator('button:has-text("Agradable")').first().click();
-    await page.locator('button:has-text("Muy agradable")').first().click();
+    await page.locator('button:has-text("Muy agradable")').nth(1).click();
     await page.locator('button:has-text("Excelente")').first().click();
     await page.locator('button:has-text("Siguiente")').click();
  

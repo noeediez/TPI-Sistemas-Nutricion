@@ -55,7 +55,7 @@ test.describe("Flujo completo de la encuesta", () => {
     await excelentesP3.first().click();
 
     const muyBuenas = page.locator('button:has-text("Muy buena")');
-    await muyBuenas.first().click();
+    await muyBuenas.nth(1).click();
 
     await clickBoton(page, "Siguiente");
 
@@ -64,7 +64,7 @@ test.describe("Flujo completo de la encuesta", () => {
 
     const agradables = page.locator('button:has-text("Agradable")');
     await agradables.first().click();
-    await clickBoton(page, "Muy agradable");
+    await page.locator('button:has-text("Muy agradable")').nth(1).click();
 
     const excelentesP4 = page.locator('button:has-text("Excelente")');
     await excelentesP4.first().click();
