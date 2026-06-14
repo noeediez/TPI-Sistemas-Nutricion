@@ -98,7 +98,7 @@ test.describe("Validaciones por paso", () => {
     // Paso 3
     await expect(page.locator("h1")).toContainText("Olfato", { timeout: 5000 });
     await page.locator('button:has-text("Muy agradable")').first().click();
-    await page.locator('button:has-text("Crocante")').click();
+    await page.locator('button:has-text("Crocante")').first().click();
     await page.locator('button:has-text("Excelente")').first().click();
     await page.locator('button:has-text("Muy buena")').first().click();
     await page.locator('button:has-text("Siguiente")').click();
