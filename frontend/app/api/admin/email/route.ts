@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(request: NextRequest) {
   let body: any;
   try { body = await request.json(); }
@@ -12,6 +10,11 @@ export async function POST(request: NextRequest) {
   if (!destinatarios?.length) {
     return NextResponse.json({ error: "Falta destinatario" }, { status: 400 });
   }
+
+  if (!process.env.RESEND_API_KEY) {
+    return NextResponse.json({ error: "RESEND_API_KEY no configurada" }, { status: 500 });
+  }
+  const resend = new Resend(process.env.RESEND_API_KEY);
 
   try {
     await Promise.all(
