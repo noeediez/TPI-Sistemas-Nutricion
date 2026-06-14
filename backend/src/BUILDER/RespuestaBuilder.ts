@@ -4,6 +4,9 @@ import { IRespuestaBuilder } from "../Interfaces/IRespuestaBuilder";
 export class RespuestaBuilder implements IRespuestaBuilder {
 
     private clientUuid: string;
+    private nombre: string | null;
+    private apellido: string | null;
+    private email: string | null;
     private sexo: string | null;
     private rangoEtario: string | null;
     private colorAtractivo: number | null;
@@ -25,6 +28,9 @@ export class RespuestaBuilder implements IRespuestaBuilder {
 
     constructor(clientUuid: string) {
         this.clientUuid = clientUuid;
+        this.nombre = null;
+        this.apellido = null;
+        this.email = null;
         this.sexo = null;
         this.rangoEtario = null;
         this.colorAtractivo = null;
@@ -66,6 +72,9 @@ export class RespuestaBuilder implements IRespuestaBuilder {
         if (apellido.trim() === "") {
             throw new Error("El apellido no puede estar vacio");
         }
+        this.nombre = nombre.trim();
+        this.apellido = apellido.trim();
+        this.email = this.validarEmail(email);
         return this;
     }
 
@@ -138,6 +147,8 @@ export class RespuestaBuilder implements IRespuestaBuilder {
     }
 
     public build(): Respuesta {
+        if (this.nombre === null || this.apellido === null || this.email === null)
+                                                 throw new Error("Falta: datos personales");
         if (this.sexo === null)                 throw new Error("Falta: sexo");
         if (this.rangoEtario === null)          throw new Error("Falta: rango etario");
         if (this.colorAtractivo === null)       throw new Error("Falta completar: Vista");

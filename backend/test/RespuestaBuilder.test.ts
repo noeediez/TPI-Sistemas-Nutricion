@@ -4,6 +4,8 @@ import { Respuesta } from "../src/Respuesta";
 
 function builderCompleto(uuid = "uuid-test"): RespuestaBuilder {
     return new RespuestaBuilder(uuid)
+        .setDatosPersonales("Juan", "Perez", "juan@test.com")
+        .setDatosEvaluador("Masculino", "18-25")
         .setVista(4, 5, 3)
         .setOlfatoTextura(4, 3, 5, 2)
         .setSabor(4, 5, 3)
@@ -25,6 +27,8 @@ describe("RespuestaBuilder – setDatosPersonales", () => {
 
     it("recorta espacios en nombre y apellido", () => {
         const resp = new RespuestaBuilder("uuid")
+            .setDatosPersonales("  Juan  ", "  Perez  ", "juan@test.com")
+            .setDatosEvaluador("Otro", "18-25")
             .setVista(1, 1, 1)
             .setOlfatoTextura(1, 1, 1, 1)
             .setSabor(1, 1, 1)
