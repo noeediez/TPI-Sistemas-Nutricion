@@ -548,7 +548,9 @@ export default function EncuestaPage() {
 
             <textarea
               value={comentario}
-              onChange={(e) => setComentario(e.target.value)}
+              onChange={(e) => {
+                 setComentario(e.target.value);
+                }}
               placeholder="Escribí aquí cualquier observación o sugerencia..."
               rows={5}
               style={{

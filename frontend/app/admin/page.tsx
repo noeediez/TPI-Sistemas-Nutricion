@@ -992,8 +992,10 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
                 <div style={{ color: "#ccc", fontSize: "12px", textAlign: "center", padding: "12px" }}>No hay contactos guardados</div>
               )}
               {contactos.map(c => (
-                <div key={c.email} onClick={() => {
-                  toggleSeleccionado(c.email);
+                <button  
+                key={c.email} 
+                onClick={() => {
+                toggleSeleccionado(c.email);
                 }} 
                   style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px 14px", borderRadius: "10px", border: `1px solid ${seleccionados.includes(c.email) ? "#76955E" : "#EEE"}`, background: seleccionados.includes(c.email) ? "#F0F5E8" : "white", cursor: "pointer" }}>
                   <div style={{ width: "18px", height: "18px", borderRadius: "4px", border: `2px solid ${seleccionados.includes(c.email) ? "#76955E" : "#DDD"}`, background: seleccionados.includes(c.email) ? "#76955E" : "white", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -1003,7 +1005,7 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
                     <div style={{ fontSize: "13px", fontWeight: "600", color: "#333" }}>{c.nombre}</div>
                     <div style={{ fontSize: "11px", color: "#aaa" }}>{c.email}</div>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
             <div style={{ borderTop: "1px solid #EEE", paddingTop: "14px", marginBottom: "16px" }}>
@@ -1132,12 +1134,16 @@ export default function AdminPanel() {
         </div>
 
         {navItems.map((n) => (
-          <div key={n.id} style={S.navItem(page === n.id)} onClick={() => {
+          <button 
+          key={n.id} 
+          style={S.navItem(page === n.id)}
+          onClick={() => {
              setPage(n.id); 
-             }}>
+             }}
+             >
             <span>{n.emoji}</span>
             <span>{n.label}</span>
-          </div>
+          </button>
         ))}
 
         <div style={{ marginTop: "auto", padding: "16px 18px 0", borderTop: "1px solid #EEE" }}>
