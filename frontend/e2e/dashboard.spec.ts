@@ -14,7 +14,8 @@ test.describe("Dashboard de administración", () => {
   test("El dashboard carga y muestra estadísticas globales", async ({ page }) => {
     await loginAdmin(page);
 
-   await expect(page.locator("body")).toBeVisible({ timeout: 10000 });
+   const tabla = page.locator("body");
+await expect(tabla).toBeVisible({ timeout: 10000 });
   });
 
   test("El dashboard muestra el gráfico radar de atributos", async ({ page }) => {
