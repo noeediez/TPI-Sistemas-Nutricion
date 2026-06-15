@@ -21,13 +21,13 @@ testDir: "./e2e",
 
   use: {
     // URL base del proyecto local
-    baseURL: "http://localhost:3000",
-
+   baseURL: "http://localhost:3000",
     // Guarda trazas si el test falla (para debug)
     trace: "on-first-retry",
 
     // Captura screenshot si falla
     screenshot: "only-on-failure",
+    ignoreHTTPSErrors: true,
   },
 
   projects: [
