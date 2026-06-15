@@ -12,7 +12,7 @@ function abrirDB(): Promise<IDBDatabase> {
       }
     };
     request.onsuccess = (event) => resolve((event.target as IDBOpenDBRequest).result);
-    request.onerror  = (event) => reject((event.target as IDBOpenDBRequest).error);
+    request.onerror = (event) => reject(new Error((event.target as IDBOpenDBRequest).error?.message ?? "Error al abrir DB"));
   });
 }
 
@@ -22,7 +22,7 @@ export async function saveToQueue(vote: Record<string, unknown>): Promise<void> 
     const tx = db.transaction(STORE_NAME, "readwrite");
     tx.objectStore(STORE_NAME).put(vote);  // ← era voto
     tx.oncomplete = () => resolve();
-    tx.onerror    = () => reject(tx.error);
+    tx.onerror    = () => reject(new Error(tx.error?.message ?? "Error al guardar en cola"));
   });
 }
 
@@ -35,7 +35,7 @@ export async function obtenerVotosPendientes(): Promise<Record<string, unknown>[
     const tx      = db.transaction(STORE_NAME, "readonly");
     const request = tx.objectStore(STORE_NAME).getAll();
     request.onsuccess = () => resolve(request.result);
-    request.onerror   = () => reject(request.error);
+    request.onerror = () => reject(new Error(request.error?.message ?? "Error al obtener votos"));
   });
 }
 
@@ -45,6 +45,6 @@ export async function eliminarVotoDeCola(clientUuid: string): Promise<void> {
     const tx = db.transaction(STORE_NAME, "readwrite");
     tx.objectStore(STORE_NAME).delete(clientUuid);
     tx.oncomplete = () => resolve();
-    tx.onerror    = () => reject(tx.error);
+    tx.onerror = () => reject(new Error(tx.error?.message ?? "Error al eliminar voto"));
   });
 }

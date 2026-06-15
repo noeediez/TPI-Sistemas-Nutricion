@@ -833,7 +833,7 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
             </div>
           ) : (
             historial.map(conv => (
-              <div
+              <button
                 key={conv.id}
                 className="chat-hist-item"
                 onClick={() => {
@@ -852,7 +852,7 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
                   {conv.titulo}
                 </div>
                 <div style={{ fontSize: "10px", color: "#aaa", marginTop: "3px" }}>{conv.fecha}</div>
-              </div>
+              </button>
             ))
           )}
         </div>
@@ -1114,12 +1114,17 @@ export default function AdminPanel() {
   ];
 
   return (
-    <div className="admin-layout">
-      {sidebarAbierto && (
-        <div className="admin-overlay" onClick={() => {
-           setSidebarAbierto(false); 
-          }}/>
-      )}
+  <div className="admin-layout">
+    {sidebarAbierto && (
+      <div
+        className="admin-overlay"
+        role="button"
+        tabIndex={0}
+        aria-label="Cerrar menú"
+        onClick={() => { setSidebarAbierto(false); }}
+        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") setSidebarAbierto(false); }}
+      />
+    )}
 
       {nuevaRespuesta && (
         <div style={{ position: "fixed", top: "20px", right: "20px", background: "#76955E", color: "white", padding: "10px 18px", borderRadius: "20px", fontWeight: "700", fontSize: "13px", zIndex: 9999, boxShadow: "0 4px 16px rgba(0,0,0,0.2)" }}>
