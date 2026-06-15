@@ -102,6 +102,7 @@ export default function AdminLoginPage() {
           {/* Campo usuario */}
           <div style={{ marginBottom: "16px" }}>
             <label
+              htmlFor="usuario"
               style={{
                 display: "block",
                 color: "#333",
@@ -126,6 +127,7 @@ export default function AdminLoginPage() {
               >
               </span>
               <input
+              id = "usuario"
                 type="text"
                 value={usuario}
                 onChange={(e) => { setUsuario(e.target.value); }}
@@ -151,6 +153,7 @@ export default function AdminLoginPage() {
           {/* Campo contraseña */}
           <div style={{ marginBottom: "22px" }}>
             <label
+            htmlFor="contraseña"
               style={{
                 display: "block",
                 color: "#333",
@@ -175,6 +178,7 @@ export default function AdminLoginPage() {
               >
               </span>
               <input
+              id = "contraseña"
                 type="password"
                 value={contrasena}
                 onChange={(e) => { setContrasena(e.target.value); }}

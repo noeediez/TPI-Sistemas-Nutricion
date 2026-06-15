@@ -53,7 +53,7 @@ interface Conversacion {
 function avg(nums: number[]): number {
   const valid = nums.filter((n) => n > 0);
   if (!valid.length) return 0;
-  return parseFloat((valid.reduce((a, b) => a + b, 0) / valid.length).toFixed(2));
+  return Number.parseFloat((valid.reduce((a, b) => a + b, 0) / valid.length).toFixed(2));
 }
 
 function pct(values: string[], target: string): number {
@@ -63,8 +63,8 @@ function pct(values: string[], target: string): number {
 
 function avgAge(edades: string[]): string {
   const nums = edades
-    .map((e) => { const m = e.match(/\d+/); return m ? parseInt(m[0]) : NaN; })
-    .filter((n) => !isNaN(n));
+    .map((e) => { const m = e.match(/\d+/); return m ? Number.parseInt(m[0]) : Number.NaN; })
+    .filter((n) => !Number.isNaN(n));
   if (!nums.length) return "—";
   return Math.round(nums.reduce((a, b) => a + b, 0) / nums.length) + " años";
 }
