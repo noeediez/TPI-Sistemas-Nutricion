@@ -993,6 +993,7 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
               )}
               {contactos.map(c => (
                 <button  
+                type="button" 
                 key={c.email} 
                 onClick={() => {
                 toggleSeleccionado(c.email);

@@ -639,7 +639,10 @@ export default function EncuestaPage() {
 
       {aviso && (
         <>
-          <div className="aviso-overlay" onClick={() => {
+          <button
+          type="button"
+          className="aviso-overlay" 
+          onClick={() => {
             setAviso("");
           }} />
           <div className="aviso-toast">
