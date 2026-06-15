@@ -497,7 +497,9 @@ function PageComentarios({ respuestas }: { respuestas: Respuesta[] }) {
           type="text"
           placeholder="Buscar comentarios..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+             setSearch(e.target.value);
+            }}
           style={{ flex: 1, padding: "10px 14px", borderRadius: "30px", border: "1px solid #DDD", fontSize: "13px", outline: "none", background: "white" }}
         />
         <div style={{ fontSize: "13px", color: "#aaa", display: "flex", alignItems: "center" }}>
@@ -834,7 +836,9 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
               <div
                 key={conv.id}
                 className="chat-hist-item"
-                onClick={() => cargarConversacion(conv)}
+                onClick={() => {
+                   cargarConversacion(conv);
+                  }}
                 style={{
                   padding: "10px 16px",
                   cursor: "pointer",
@@ -858,7 +862,9 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
 
         <div className="chat-conv-toggle" style={{ display: "none", background: "white", borderBottom: "1px solid #EEE", padding: "8px 16px" }}>
           <button
-            onClick={() => setPanelHistAbierto(v => !v)}
+            onClick={() => {
+              setPanelHistAbierto(v => !v);
+            }}
             style={{ background: "transparent", border: "1px solid #C8D4B0", color: "#76955E", borderRadius: "20px", fontSize: "12px", padding: "6px 14px", cursor: "pointer" }}
           >
             💬 Conversaciones
@@ -882,7 +888,9 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
                     <button
                       key={s}
                       className="chat-chip"
-                      onClick={() => { setInput(s); }}
+                      onClick={() => {
+                         setInput(s); 
+                        }}
                       style={{ background: "white", border: "1px solid #E0E0E0", borderRadius: "20px", padding: "8px 14px", fontSize: "12px", color: "#555", cursor: "pointer", transition: "all 0.15s" }}
                     >
                       {s}
@@ -938,7 +946,9 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
                 📄 Descargar informe
               </button>
               <button
-                onClick={() => { setModalMailAbierto(true); }}
+                onClick={() => { 
+                  setModalMailAbierto(true); 
+                }}
                 style={{ background: "#76955E", border: "none", color: "white", borderRadius: "20px", fontSize: "12px", padding: "6px 14px", cursor: "pointer" }}
               >
                 📧 Enviar por mail
@@ -951,7 +961,9 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
             <textarea
               value={input}
               rows={1}
-              onChange={e => setInput(e.target.value)}
+              onChange={e => {
+                setInput(e.target.value);
+              }}
               onKeyDown={e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); enviar(); } }}
               onFocus={e   => { (e.target as HTMLTextAreaElement).style.borderColor = "#76955E"; }}
               onBlur={e    => { (e.target as HTMLTextAreaElement).style.borderColor = "#DDD"; }}
@@ -980,7 +992,9 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
                 <div style={{ color: "#ccc", fontSize: "12px", textAlign: "center", padding: "12px" }}>No hay contactos guardados</div>
               )}
               {contactos.map(c => (
-                <div key={c.email} onClick={() => toggleSeleccionado(c.email)}
+                <div key={c.email} onClick={() => {
+                  toggleSeleccionado(c.email);
+                }} 
                   style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px 14px", borderRadius: "10px", border: `1px solid ${seleccionados.includes(c.email) ? "#76955E" : "#EEE"}`, background: seleccionados.includes(c.email) ? "#F0F5E8" : "white", cursor: "pointer" }}>
                   <div style={{ width: "18px", height: "18px", borderRadius: "4px", border: `2px solid ${seleccionados.includes(c.email) ? "#76955E" : "#DDD"}`, background: seleccionados.includes(c.email) ? "#76955E" : "white", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     {seleccionados.includes(c.email) && <span style={{ color: "white", fontSize: "11px" }}>✓</span>}
@@ -995,15 +1009,21 @@ function PageNotas({ totalRespuestas, promedioGeneral }: { totalRespuestas: numb
             <div style={{ borderTop: "1px solid #EEE", paddingTop: "14px", marginBottom: "16px" }}>
               <div style={{ fontSize: "11px", color: "#888", fontWeight: "700", marginBottom: "8px" }}>AGREGAR CONTACTO</div>
               <div style={{ display: "flex", gap: "8px", marginBottom: "6px" }}>
-                <input value={nuevoNombre} onChange={e => setNuevoNombre(e.target.value)} placeholder="Nombre" style={{ flex: 1, border: "1px solid #DDD", borderRadius: "8px", padding: "8px 10px", fontSize: "12px", outline: "none" }} />
-                <input value={nuevoEmail} onChange={e => setNuevoEmail(e.target.value)} placeholder="Email" style={{ flex: 2, border: "1px solid #DDD", borderRadius: "8px", padding: "8px 10px", fontSize: "12px", outline: "none" }} />
+                <input value={nuevoNombre} onChange={e => {
+                  setNuevoNombre(e.target.value);
+                }} placeholder="Nombre" style={{ flex: 1, border: "1px solid #DDD", borderRadius: "8px", padding: "8px 10px", fontSize: "12px", outline: "none" }} />
+                <input value={nuevoEmail} onChange={e => {
+                  setNuevoEmail(e.target.value);
+                }} placeholder="Email" style={{ flex: 2, border: "1px solid #DDD", borderRadius: "8px", padding: "8px 10px", fontSize: "12px", outline: "none" }} />
               </div>
               <button onClick={agregarContacto} style={{ background: "transparent", border: "1px solid #C8D4B0", color: "#76955E", borderRadius: "20px", fontSize: "12px", padding: "6px 14px", cursor: "pointer" }}>
                 + Agregar
               </button>
             </div>
             <div style={{ display: "flex", gap: "8px", justifyContent: "flex-end" }}>
-              <button onClick={() => { setModalMailAbierto(false); setSeleccionados([]); }}
+              <button onClick={() => { 
+                setModalMailAbierto(false); setSeleccionados([]); 
+              }}
                 style={{ background: "transparent", border: "1px solid #DDD", color: "#888", borderRadius: "20px", fontSize: "13px", padding: "8px 18px", cursor: "pointer" }}>
                 Cancelar
               </button>
@@ -1093,7 +1113,9 @@ export default function AdminPanel() {
   return (
     <div className="admin-layout">
       {sidebarAbierto && (
-        <div className="admin-overlay" onClick={() => { setSidebarAbierto(false); }}/>
+        <div className="admin-overlay" onClick={() => {
+           setSidebarAbierto(false); 
+          }}/>
       )}
 
       {nuevaRespuesta && (
@@ -1110,7 +1132,9 @@ export default function AdminPanel() {
         </div>
 
         {navItems.map((n) => (
-          <div key={n.id} style={S.navItem(page === n.id)} onClick={() => { setPage(n.id); }}>
+          <div key={n.id} style={S.navItem(page === n.id)} onClick={() => {
+             setPage(n.id); 
+             }}>
             <span>{n.emoji}</span>
             <span>{n.label}</span>
           </div>
@@ -1118,7 +1142,9 @@ export default function AdminPanel() {
 
         <div style={{ marginTop: "auto", padding: "16px 18px 0", borderTop: "1px solid #EEE" }}>
           <button
-            onClick={() => { router.push("/"); }}
+            onClick={() => {
+               router.push("/"); 
+              }}
             style={{ background: "none", border: "none", color: "#bbb", fontSize: "12px", cursor: "pointer", padding: 0, display: "flex", alignItems: "center", gap: "6px" }}
           >
             ← Menú principal
@@ -1128,7 +1154,9 @@ export default function AdminPanel() {
 
       {/* Main */}
       <main className="admin-main-content">
-        <button className="admin-hamburger" onClick={() => { setSidebarAbierto(true); }}>
+        <button className="admin-hamburger" onClick={() => {
+           setSidebarAbierto(true);
+            }}>
           ☰ Menú
         </button>
         <div style={S.topBar}>
