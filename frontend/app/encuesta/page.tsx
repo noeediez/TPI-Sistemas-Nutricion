@@ -89,7 +89,9 @@ function PreguntaEscala({ titulo, valor, setValor, opciones }: PreguntaEscalaPro
         {opciones.map((op) => (
           <button
             key={op.valor}
-            onClick={() => setValor(op.valor)}
+            onClick={() => {
+              setValor(op.valor);
+            }}
             style={{
               padding: "10px 18px",
               borderRadius: "30px",
@@ -121,7 +123,9 @@ function PreguntaSiNo({ titulo, valor, setValor }: PreguntaSiNoProps) {
         {["Sí", "No"].map((op) => (
           <button
             key={op}
-            onClick={() => setValor(op)}
+            onClick={() => {
+              setValor(op);
+            }}
             style={{
               padding: "12px 36px",
               borderRadius: "30px",
@@ -247,7 +251,9 @@ export default function EncuestaPage() {
     >
       {anterior !== undefined && (
         <button
-          onClick={() => setPaso(anterior)}
+          onClick={() => {
+            setPaso(anterior);
+          }}
           style={{
             background: "transparent",
             border: "2px solid #C8D4B0",
@@ -308,7 +314,9 @@ export default function EncuestaPage() {
             {subtitulo}
           </p>
           <button
-            onClick={() => router.push("/")}
+            onClick={() => {
+              router.push("/");
+            }}
             style={{
               background: esExitoso ? "#76955E" : "#B07D2B",
               color: "white",
@@ -334,7 +342,9 @@ export default function EncuestaPage() {
 
         <div style={{ display: "flex", justifyContent: "flex-start", marginBottom: "24px" }}>
           <button
-            onClick={() => router.push("/")}
+            onClick={() => { 
+              router.push("/");
+            }}
             style={{
               display: "flex",
               alignItems: "center",
@@ -389,7 +399,9 @@ export default function EncuestaPage() {
                 { label: "Masculino" },
                 { label: "Prefiero no especificar" },
               ].map(({ label }) => (
-                <button key={label} onClick={() => setSexo(label)} style={{
+                <button key={label} onClick={() => {
+                  setSexo(label);
+                }} style={{
                   padding: "24px 12px",
                   borderRadius: "18px",
                   border: sexo === label ? "3px solid #E7B511" : "2px solid #E0E0E0",
@@ -409,7 +421,9 @@ export default function EncuestaPage() {
             <h3 style={{ marginBottom: "14px", color: "#555", fontSize: "13px", letterSpacing: "1px" }}>RANGO DE EDAD</h3>
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", marginBottom: "36px" }}>
               {["18-25", "26-35", "36-45", "46+"].map((item) => (
-                <button key={item} onClick={() => setEdad(item)} style={{
+                <button key={item} onClick={() => {
+                  setEdad(item);
+                }} style={{
                   padding: "12px 26px",
                   borderRadius: "30px",
                   border: edad === item ? "none" : "2px solid #AFB884",
@@ -623,11 +637,15 @@ export default function EncuestaPage() {
 
       {aviso && (
         <>
-          <div className="aviso-overlay" onClick={() => setAviso("")} />
+          <div className="aviso-overlay" onClick={() => {
+            setAviso("");
+          }} />
           <div className="aviso-toast">
             <div className="aviso-icono">🌿</div>
             <div className="aviso-texto">{aviso}</div>
-            <button className="aviso-cerrar" onClick={() => setAviso("")}>Entendido</button>
+            <button className="aviso-cerrar" onClick={() => {
+              setAviso("");
+            }}>Entendido</button>
           </div>
         </>
       )}
