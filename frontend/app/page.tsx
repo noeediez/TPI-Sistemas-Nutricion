@@ -88,6 +88,7 @@ export default function Home() {
             width={500}
             height={500}
             priority
+            fetchPriority="high"
             style={{ maxWidth: "100%", height: "auto" }}
           />
         </div>
