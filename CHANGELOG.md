@@ -1,5 +1,19 @@
 # Changelog — Dip & Crunch
 
+## [1.5.1] - 2026-06-16
+### Corregido
+- Test del panel admin corregido para funcionar sin datos en la base
+- Variable de contraseña para CI
+
+## [1.5.0] - 2026-06-13
+### Agregado
+- API frontend↔backend conectando patrones de diseño (Builder, Repository, Facade)
+- Chat IA con Claude en panel admin
+- Historial de conversaciones guardado en Supabase
+- Contactos para envío de informes por mail
+- Envío de informes por mail con Resend
+- Respuestas individuales y comentarios en contexto de la IA
+
 ## [1.4.1] - 2026-06-09
 ### Corregido
 - Tests E2E de Playwright corrigido
