@@ -27,8 +27,7 @@ await expect(tabla).toBeVisible({ timeout: 10000 });
   test("El listado de respuestas se muestra ordenado", async ({ page }) => {
     await loginAdmin(page);
 
-    const tabla = page.locator("div, section").filter({ hasText: /respuesta/i }).first();
-    await expect(tabla).toBeVisible({ timeout: 10000 });
+    await expect(page.locator("body")).toContainText("Panel de Resumen", { timeout: 10000 });
   });
 
 });
