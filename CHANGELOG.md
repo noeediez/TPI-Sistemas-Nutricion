@@ -1,56 +1,54 @@
 # Changelog — Dip & Crunch
 
-## [1.5.1] - 2026-06-16
-### Corregido
-- Test del panel admin corregido para funcionar sin datos en la base
-- Variable de contraseña para CI
-
-## [1.5.0] - 2026-06-13
+## [1.0.0] - 2026-06-16
 ### Agregado
-- API frontend↔backend conectando patrones de diseño (Builder, Repository, Facade)
-- Chat IA con Claude en panel admin
+- Tests E2E con Playwright (17 casos de prueba)
+- GitHub Actions CI con 3 jobs automáticos (backend, build, E2E)
+
+## [0.9.0] - 2026-06-13
+### Agregado
+- Tests unitarios con Vitest (RespuestaBuilder, RespuestaRepository, DashboardFacade, PreguntaFactory)
+
+## [0.8.0] - 2026-06-11
+### Agregado
+- Chat con IA (Claude API) en panel admin
 - Historial de conversaciones guardado en Supabase
-- Contactos para envío de informes por mail
-- Envío de informes por mail con Resend
-- Respuestas individuales y comentarios en contexto de la IA
+- Contactos y envío de informes por mail con Resend
+- API frontend↔backend conectando patrones Builder, Repository y Facade
 
-## [1.4.1] - 2026-06-09
+## [0.7.0] - 2026-06-09
 ### Corregido
-- Tests E2E de Playwright corrigido
+- Gráficos de intención de consumo, alternativa cárnica y reemplazo de aderezos en panel admin
 
-## [1.4.0] - 2026-06-09
+## [0.6.0] - 2026-06-07
 ### Agregado
-- Cola offline con IndexedDB (los votos no se pierden si se corta el wifi)
-- Sincronización automática al recuperar conexión
-- Anti-duplicado con client_uuid
 - Google Analytics
 - Microsoft Clarity
-- GitHub Actions CI
-- Tests E2E con Playwright
 
-## [1.3.0] - 2026-06-07
+## [0.5.0] - 2026-06-05
 ### Agregado
-- Panel admin con actualización en tiempo real (Supabase Realtime)
-- Respuesta recibida en vivo
-- Corrección de bugs en gráficos del admin
-- Nuevos gráficos: Intención de consumo, Alternativa cárnica, Reemplazo de aderezos
+- Cola offline con IndexedDB
+- Sincronización automática al recuperar conexión
+- Anti-duplicado con client_uuid
 
-## [1.2.0] - 2026-06-04
+## [0.4.0] - 2026-06-04
+### Corregido
+- Diseño responsive en mobile
+
+## [0.3.0] - 2026-06-03
 ### Agregado
+- Diseño responsive inicial para todas las páginas
+
+## [0.2.0] - 2026-06-02
+### Agregado
+- Patrón Singleton para SupabaseClient
+- Patrón Facade para DashboardFacade
 - Panel de administración con gráficos
-- Gráfico de araña de atributos sensoriales
-- Distribución por edad y sexo
 - Login de administrador
-- Sección de comentarios y notas
 
-## [1.1.0] - 2026-06-02
+## [0.1.0] - 2026-05-30
 ### Agregado
-- Responsive para mobile en todas las páginas
-- Página de ingredientes
-- Mejoras visuales en el formulario
-
-## [1.0.0] - 2026-05-30
-### Agregado
+- Estructura base del proyecto (frontend/backend)
 - Encuesta sensorial completa con 5 pasos
 - Envío de respuestas a Supabase
 - Deploy en Vercel
